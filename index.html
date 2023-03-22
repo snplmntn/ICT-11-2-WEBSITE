@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dos - Login and Signup</title>
   <link rel="stylesheet" href="index.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,22 +17,25 @@
 </head>
 
 <body>
-  <div class="container-logo">
-  </div>
-
   <div class="container-all">
     <div class="contents">
       <div class="desc-containers">
         <h1>ICT 11-2</h1>
-        <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem odio distinctio optio. Dolores hic
-          dignissimos,
-          in quo quibusdam sequi provident aut obcaecati, id soluta error illo, facilis eligendi veritatis veniam ut?
-          Laudantium similique aut earum iste, sit, ipsa quos sunt sint laborum fugiat tempora voluptate temporibus
-          reprehenderit eligendi ab quibusdam in commodi impedit laboriosam. Maxime delectus vel ipsum impedit nobis
-          dolorem, aliquid, rerum fuga inventore sit soluta cum, officia ad reprehenderit excepturi ipsa illo placeat.
-          Magnam repellat fugiat porro numquam distinctio officiis quae architecto? Sed maxime unde odit fuga id veniam
-          quaerat alias a ab aut, commodi, molestiae quis voluptate?
         <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem odio
+          distinctio optio. Dolores hic dignissimos, in quo quibusdam sequi
+          provident aut obcaecati, id soluta error illo, facilis eligendi
+          veritatis veniam ut? Laudantium similique aut earum iste, sit, ipsa
+          quos sunt sint laborum fugiat tempora voluptate temporibus
+          reprehenderit eligendi ab quibusdam in commodi impedit laboriosam.
+          Maxime delectus vel ipsum impedit nobis dolorem, aliquid, rerum fuga
+          inventore sit soluta cum, officia ad reprehenderit excepturi ipsa
+          illo placeat. Magnam repellat fugiat porro numquam distinctio
+          officiis quae architecto? Sed maxime unde odit fuga id veniam
+          quaerat alias a ab aut, commodi, molestiae quis voluptate?
+        </p>
+
+        <p></p>
       </div>
     </div>
 
@@ -52,19 +55,21 @@
 
             <label>
               <input type="password" id="signup-password" placeholder="Password" />
+
+              <i class="fa fa-eye-slash fa-eye-slashS show"></i>
+              <i class="fa fa-eye fa-eyeS hidden"></i>
             </label>
-            <!-- <input type="checkbox" id="toggle-password-signup">Show Password -->
             <button type="button" id="signup-button">Sign up</button>
             <div id="signup-error" class="error"></div>
             <div id="signup-correct" class="correct"></div>
           </div>
-          <span>Already have an account?
-            <a class="to-login-button button">Login Here.</a>
-          </span>
+          <label>Already have an account?
+            <span class="to-login-button button">Login Here.</span>
+          </label>
         </form>
       </div>
 
-      <div class="container-login ">
+      <div class="container-login">
         <!-- Login Form -->
         <form class="login-form">
           <div class="form-container">
@@ -76,17 +81,17 @@
 
             <label>
               <input type="password" id="login-password" placeholder="Password" />
-              <i class="show fa fa-eye"></i>
-              <i class="hide fa fa-eye-slash"></i>
+              <i class="fa fa-eye-slash fa-eye-slashL show"></i>
+              <i class="fa fa-eye fa-eyeL hidden"></i>
             </label>
 
             <!-- <input type="checkbox" id="toggle-password-login">Show Password -->
             <button type="button" id="login-button">Login</button>
             <div id="login-error" class="error"></div>
           </div>
-          <span>No account?
+          <label>No account?
             <span class="to-signup-button button">Sign Up Here.</span>
-          </span>
+          </label>
         </form>
       </div>
     </div>

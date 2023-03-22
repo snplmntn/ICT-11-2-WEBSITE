@@ -46,6 +46,7 @@ nav {
     margin: 0 1rem;
     text-decoration: none;
     font-size: 1.2rem;
+    color: #f3fdf5;
 }
 
 .info-content-main-wrapper {
@@ -130,7 +131,7 @@ button:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #b7e4c7;
+    background-color: #b7e4c7e7;
     width: 20rem;
     height: 10rem;
     border-radius: 0.5rem;
