@@ -31,7 +31,7 @@
         <div class="headers">
           <h2>
             Hello,
-            <span id="user-name"></span>!
+            <span id="user-name"></span>
           </h2>
         </div>
         <div class="info-announce-contents"></div>
@@ -41,16 +41,42 @@
       </main>
       <div class="announcement-wrapper aside-contents">
         <div class="headers">
-          <h2>Announcements!</h2>
+          <h2 id="add-announcement">Announcements!</h2>
         </div>
-        <div class="info-announce-contents"></div>
+        <div class="info-announce-contents" id="new-announcements">
+          <div>
+            <h2>test title</h2>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
+              neque corporis quaerat sint aliquam minima officia unde ullam,
+              ducimus, asperiores velit reiciendis quae eligendi officiis. Id
+              excepturi omnis consectetur quod?
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-    <form class="logout-modal hidden">
+    <form action="index.html" class="logout-modal hidden">
       <input type="button" class="btn-close" value="&times;" />
       <h2>Are you sure you want to Logout?</h2>
       <button id="logout-button">Logout</button>
     </form>
+
+    <div class="announce-container hidden">
+      <input type="button" class="btn-close" value="&times;" />
+      <h2>Create new announcement</h2>
+      <div class="add-announce-container">
+        <label>
+          <input type="text" id="title" placeholder="Title" />
+        </label>
+
+        <label>
+          <input type="text" id="content" placeholder="Add text..." />
+        </label>
+
+        <button type="button" id="submit-btn">Submit</button>
+      </div>
+    </div>
     <div class="overlay hidden"></div>
 
     <footer>
@@ -59,6 +85,7 @@
         <span class="preloader-span"></span>
       </div>
     </footer>
+
     <script type="module" src="script.js"></script>
   </body>
 </html>
