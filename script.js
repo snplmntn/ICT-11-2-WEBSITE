@@ -46,19 +46,19 @@ announce.addEventListener('click', function () {
 const submitAnnounce = document.querySelector('#submit-btn');
 const announceContainer = document.querySelector('#new-announcements');
 
-//CREATE NEW ELEMENTS
-const divCreate = document.createElement('DIV');
-const titleCreate = document.createElement('H2');
-const contentCreate = document.createElement('P');
-
-const titleValue = document.querySelector('#title');
-const contentValue = document.querySelector('#content');
-const titleArrays = [];
-const contentArrays = [];
 
 submitAnnounce.addEventListener('click', function () {
-  // titleArrays.push(titleValue.value);
-  // contentArrays.push(contentValue.value);
+  //CREATE NEW ELEMENTS
+  const divCreate = document.createElement('DIV');
+  const titleCreate = document.createElement('H2');
+  const contentCreate = document.createElement('P');
+
+  const titleValue = document.querySelector('#title');
+  const contentValue = document.querySelector('#content');
+  const titleArrays = [];
+  const contentArrays = [];
+  titleArrays.push(titleValue.value);
+  contentArrays.push(contentValue.value);
 
   titleCreate.textContent = 'test title';
   contentCreate.textContent = 'test content';
