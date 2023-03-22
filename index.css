@@ -148,7 +148,10 @@ button:active {
 
 .correct {
   color: rgb(0, 255, 85);
+  font-size: 25px;
   margin-top: 10px;
+  font-weight: bold;
+  margin: auto;
 }
 
 h1 {
