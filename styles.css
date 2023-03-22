@@ -23,6 +23,7 @@
     border-radius: 1rem;
 }
 
+*/
 /* styles for login page */
 
 
@@ -70,6 +71,7 @@ nav {
 
 .announcement-wrapper {
     width: 20%;
+    overflow: scroll;
 }
 
 .info-announce-contents {
@@ -78,7 +80,7 @@ nav {
     border-radius: 0.5rem;
     padding: 1rem;
     margin-top: 1rem;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .info-announce-contents div {

@@ -49,21 +49,26 @@ const announceContainer = document.querySelector('#new-announcements');
 
 submitAnnounce.addEventListener('click', function () {
   //CREATE NEW ELEMENTS
-  const divCreate = document.createElement('DIV');
-  const titleCreate = document.createElement('H2');
-  const contentCreate = document.createElement('P');
+  const divCreate = document.createElement('div');
+  const titleCreate = document.createElement('h2');
+  const contentCreate = document.createElement('p');
 
   const titleValue = document.querySelector('#title');
   const contentValue = document.querySelector('#content');
   const titleArrays = [];
   const contentArrays = [];
+  let i = 0;
   titleArrays.push(titleValue.value);
   contentArrays.push(contentValue.value);
 
-  titleCreate.textContent = 'test title';
-  contentCreate.textContent = 'test content';
+  titleCreate.innerHTML = titleArrays[i];
+  contentCreate.innerHTML = contentArrays[i];
+  i++;
+
   announceContainer.appendChild(divCreate);
   divCreate.appendChild(titleCreate);
   divCreate.appendChild(contentCreate);
+  titleValue.value = ''
+  contentValue.value = ''
   toggleModal();
 });
