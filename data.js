@@ -83,8 +83,10 @@ function signup() {
       set(databaseRef, user_data);
 
       // Done
-      console.log("User signed up:", user);
-      alert("Signup successful!");
+      // console.log("User signed up:", user);
+      document.getElementById("signup-correct").innerHTML =
+        "Signup successful!";
+      sError.textContent = "";
     })
     .catch(function (error) {
       // Sign up failed
@@ -92,6 +94,7 @@ function signup() {
       var errorMessage = error.message;
       console.error("Error signing up:", errorMessage);
       sError.textContent = errorMessage;
+      document.getElementById("signup-correct").innerHTML = "";
     });
 }
 
@@ -118,7 +121,7 @@ function login() {
         var databaseRef = ref(database, "users/" + user.uid);
         // Retrieve User data
         get(databaseRef).then((user_data) => {
-          console.log("Name:", user_data.val().name);
+          // console.log("Name:", user_data.val().name);
           localStorage.setItem("userName", user_data.val().name);
 
           // Redirect to dashboard or homepage

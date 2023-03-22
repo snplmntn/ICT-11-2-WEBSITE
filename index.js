@@ -20,3 +20,34 @@ const login_signup = function () {
 
 to_signup_button.addEventListener("click", login_signup);
 to_login_button.addEventListener("click", login_signup);
+
+const faEyeL = document.querySelector(".fa-eyeL");
+const faEyeSlashL = document.querySelector(".fa-eye-slashL");
+const faEyeS = document.querySelector(".fa-eyeS");
+const faEyeSlashS = document.querySelector(".fa-eye-slashS");
+
+const toggleLoginPassword = function () {
+  let password = document.querySelector("#login-password");
+  if (password.type === "password") password.type = "text";
+  else password.type = "password";
+
+  faEyeL.classList.toggle("hidden");
+  faEyeL.classList.toggle("show");
+  faEyeSlashL.classList.toggle("show");
+  faEyeSlashL.classList.toggle("hidden");
+};
+
+const toggleSignupPassword = function () {
+  let password = document.querySelector("#signup-password");
+  if (password.type === "password") password.type = "text";
+  else password.type = "password";
+  faEyeS.classList.toggle("hidden");
+  faEyeS.classList.toggle("show");
+  faEyeSlashS.classList.toggle("show");
+  faEyeSlashS.classList.toggle("hidden");
+};
+
+faEyeL.addEventListener("click", toggleLoginPassword);
+faEyeSlashL.addEventListener("click", toggleLoginPassword);
+faEyeS.addEventListener("click", toggleSignupPassword);
+faEyeSlashS.addEventListener("click", toggleSignupPassword);
