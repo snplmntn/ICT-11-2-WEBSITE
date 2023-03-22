@@ -4,6 +4,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
 import {
   getAuth,
+  signOut,
+  onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
@@ -16,6 +18,23 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+
+let load = false;
+//Checks User's Auth
+function checkAuthState() {
+  auth.onAuthStateChanged(function (user) {
+    if (load) {
+      if (user) {
+        window.location.href = "/dashboard.html";
+      }
+      load = false;
+    }
+  });
+}
+window.addEventListener("load", function () {
+  load = true;
+  checkAuthState();
+});
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -80,19 +99,20 @@ function signup() {
       };
 
       // Push to Firebase Database
-      set(databaseRef, user_data);
+      set(databaseRef, user_data).then(function () {
+        document.getElementById("signup-correct").innerHTML =
+          "Signup successful!";
+        sError.textContent = "";
 
-      // Done
-      // console.log("User signed up:", user);
-      document.getElementById("signup-correct").innerHTML =
-        "Signup successful!";
-      sError.textContent = "";
+        auth.signOut();
+      });
     })
     .catch(function (error) {
       // Sign up failed
       var errorCode = error.code;
       var errorMessage = error.message;
       console.error("Error signing up:", errorMessage);
+      console.log(errorCode);
       sError.textContent = errorMessage;
       document.getElementById("signup-correct").innerHTML = "";
     });
@@ -123,9 +143,8 @@ function login() {
         get(databaseRef).then((user_data) => {
           // console.log("Name:", user_data.val().name);
           localStorage.setItem("userName", user_data.val().name);
-
-          // Redirect to dashboard or homepage
-          window.location.href = "dashboard.html";
+          console.log(localStorage.getItem("userName"));
+          window.location.href = "/dashboard.html";
         });
         // Update last login time
         update(databaseRef, { last_login: Date.now() });
@@ -135,7 +154,7 @@ function login() {
       // Handle errors
       var errorCode = error.code;
       var errorMessage = error.message;
-      console.error(errorCode, errorMessage);
+      console.error(errorCode);
       document.getElementById("login-error").innerHTML = errorMessage;
     });
 }
