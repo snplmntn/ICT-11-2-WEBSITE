@@ -2,50 +2,64 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dos - Login and Signup</title>
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <div class="container-logo"><img class="logo" src="img/logo.png" alt="dos-logo"></img><h1>DOS</h1></div>
-    
-    <div class="container-all">
-      <div class="contents"><h1>SHORT DESCRIPTION</h1><p> ipsum dolor sit amet, consectetur adipisicing elit. Consectetur aut, optio voluptatibus nulla iste nemo delectus maxime iure accusantium? Mollitia ex qui laboriosam reiciendis, facilis earum sequi odit ducimus aut, repudiandae consequuntur veniam consectetur inventore saepe exercitationem aspernatur nisi quaerat eos omnis. Sed quas labore illo odit? Incidunt sunt voluptates eum illum harum aperiam, veritatis consequatur vitae debitis commodi tempore at dolores nesciunt saepe assumenda placeat non. Et blanditiis amet velit dolore quod placeat consequuntur suscipit, ullam minima assumenda accusantium dignissimos ad veritatis voluptas obcaecati repellat ab, magni autem. Ex sequi voluptas ea illo, doloremque, necessitatibus nam ab soluta deserunt hic magnam. Alias suscipit tempore consequatur? Excepturi exercitationem aperiam neque architecto molestias quaerat et dolore adipisci? Laborum blanditiis voluptatum aliquid fugit mollitia, sequi inventore ratione tempora tempore in dolores deserunt molestiae. Doloremque voluptatum est ipsum reiciendis cupiditate dolorem earum dignissimos provident temporibus amet qui aperiam a, itaque ex mollitia. Sequi cumque quae explicabo voluptas accusantium, rerum ullam placeat vero inventore adipisci tenetur enim aliquam similique reiciendis quas? Reiciendis dolores maxime suscipit enim facilis reprehenderit, est libero qui iste error aliquid alias aliquam ipsam consequatur quas. Distinctio vel corrupti reiciendis ipsa perferendis similique, officia numquam voluptate odit quos voluptatem earum libero quis officiis optio doloremque! Aperiam nihil autem est quia repudiandae voluptatum, eum earum sequi aliquid pariatur odit soluta ullam. Et voluptate nesciunt, temporibus nam tempore natus. Sapiente minus doloremque temporibus consequatur repudiandae, quia ipsa eligendi vero iure, dolore ea rem quo doloribus repellendus quae, dignissimos numquam id! Ipsam saepe ipsum consequuntur deleniti facilis sunt tempora est quas et sint facere, beatae incidunt molestias! Asperiores iste ratione quis quia culpa blanditiis repellat accusamus maxime natus quidem dignissimos, commodi aperiam eum facilis aut, minus accusantium dicta dolor. Quod rem dicta expedita possimus nesciunt reiciendis cum unde vitae distinctio! Cumque dolorem quibusdam dolore.</p></div>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dos - Login and Signup</title>
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
-      <div class="container-signup hidden">
-        <!-- Signup Form -->
-        <form class="signup-form">
-          <h2>Sign up</h2>
-          <input type="text" id="signup-name" placeholder="Name" />
-          <input type="text" id="signup-email" placeholder="Email" />
-          <input type="password" id="signup-password" placeholder="Password" />
-          <button type="button" id="signup-button">Sign up</button>
-          <div id="signup-error" class="error"></div>
-          <span
-            >Already have an account?
-            <a class="to-login-button button">Login Here.</a></span
-          >
-        </form>
-      </div>
+<body>
+  <div class="container-logo"><img class="logo" src="img/logo.png" alt="dos-logo"></img>
+  </div>
 
-      <div class="container-login ">
-        <!-- Login Form -->
-        <form class="login-form">
-          <h2>Login</h2>
-          <input type="text" id="login-email" placeholder="Email" />
-          <input type="password" id="login-password" placeholder="Password" />
-          <button type="button" id="login-button">Login</button>
-          <div id="login-error" class="error"></div>
-          <span
-            >No account?
-            <span class="to-signup-button button">Sign Up Here.</span></span
-          >
-        </form>
-      </div>
+  <div class="container-all">
+    <div class="contents">
+      <h1>ICT 11-2</h1>
+      <h4> Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem odio distinctio optio. Dolores hic dignissimos,
+        in quo quibusdam sequi provident aut obcaecati, id soluta error illo, facilis eligendi veritatis veniam ut?
+        Laudantium similique aut earum iste, sit, ipsa quos sunt sint laborum fugiat tempora voluptate temporibus
+        reprehenderit eligendi ab quibusdam in commodi impedit laboriosam. Maxime delectus vel ipsum impedit nobis
+        dolorem, aliquid, rerum fuga inventore sit soluta cum, officia ad reprehenderit excepturi ipsa illo placeat.
+        Magnam repellat fugiat porro numquam distinctio officiis quae architecto? Sed maxime unde odit fuga id veniam
+        quaerat alias a ab aut, commodi, molestiae quis voluptate?</h4>
     </div>
-    <script type="module" src="data.js"></script>
-    <script src="index.js"></script>
-  </body>
+
+    <div class="container-signup hidden">
+      <!-- Signup Form -->
+      <form class="signup-form">
+        <h2>Sign up</h2>
+        <input type="text" id="signup-name" placeholder="Name" />
+        <input type="text" id="signup-email" placeholder="Email" />
+        <input type="password" id="signup-password" placeholder="Password" />
+        <input type="checkbox" id="toggle-password-signup">Show Password
+        <button type="button" id="signup-button">Sign up</button>
+        <div id="signup-error" class="error"></div>
+        <div id="signup-correct" class="correct"></div>
+        <span>Already have an account?
+          <a class="to-login-button button">Login Here.</a></span>
+      </form>
+    </div>
+
+    <div class="container-login ">
+      <!-- Login Form -->
+      <form class="login-form">
+        <h2>Login</h2>
+        <input type="text" id="login-email" placeholder="Email" />
+        <input type="password" id="login-password" placeholder="Password" /><i class="show fa fa-eye"></i>
+        <i class="hide fa fa-eye-slash"></i>
+        <input type="checkbox" id="toggle-password-login">Show Password
+        <button type="button" id="login-button">Login</button>
+        <div id="login-error" class="error"></div>
+        <span>No account?
+          <span class="to-signup-button button">Sign Up Here.</span></span>
+
+      </form>
+    </div>
+  </div>
+  <script type="module" src="data.js"></script>
+  <script src="index.js"></script>
+</body>
+
 </html>

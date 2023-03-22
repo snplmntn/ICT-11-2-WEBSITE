@@ -5,14 +5,9 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  background-color: #b7e4c7;
   width: 100%;
   height: 100vh;
-}
-
-h1 {
-  text-align: center;
-  margin-top: 50px;
 }
 
 .container-logo {
@@ -43,16 +38,28 @@ h1 {
   height: 90%;
 }
 
-.container-signup > form,
-.container-login > form {
+.container-signup>form,
+.container-login>form {
   text-align: center;
-  background-color: #09c86d;
+  /* background-color: #09c86d; */
+  background: linear-gradient(to right, #09c86d, #4bbe79);
   max-width: 80%;
   height: 90%;
   margin: 50px auto;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+  /* color: #09c86d; */
+}
+
+.show,
+.hide {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 28px;
+  color: #333;
 }
 
 .hidden {
@@ -70,24 +77,37 @@ input[type="text"],
 input[type="password"],
 button {
   display: block;
-  margin: 10px auto;
+  margin: 20px auto;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 100%;
+  width: 90%;
+  height: 10%;
   box-sizing: border-box;
   font-size: 16px;
 }
 
 button {
   background-color: #fff;
-  color: #09c86d;
+  color: #68e6a9;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
+  max-width: 10em;
+  border-radius: 20px;
+}
+
+button:active {
+  color: #09c86d;
+  transform: scale(0.95);
 }
 
 .error {
   color: red;
+  margin-top: 10px;
+}
+
+.correct {
+  color: rgb(0, 255, 85);
   margin-top: 10px;
 }

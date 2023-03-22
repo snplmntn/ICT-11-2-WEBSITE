@@ -83,7 +83,7 @@ function signup() {
       set(databaseRef, user_data);
 
       // Done
-      console.log("User signed up:", user);
+      // console.log("User signed up:", user);
       alert("Signup successful!");
     })
     .catch(function (error) {
@@ -118,7 +118,7 @@ function login() {
         var databaseRef = ref(database, "users/" + user.uid);
         // Retrieve User data
         get(databaseRef).then((user_data) => {
-          console.log("Name:", user_data.val().name);
+          // console.log("Name:", user_data.val().name);
           localStorage.setItem("userName", user_data.val().name);
 
           // Redirect to dashboard or homepage

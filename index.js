@@ -20,3 +20,22 @@ const login_signup = function () {
 
 to_signup_button.addEventListener("click", login_signup);
 to_login_button.addEventListener("click", login_signup);
+
+document.querySelector('#toggle-password-signup').addEventListener('click', function () {
+  let password = document.querySelector("#signup-password");
+  if (password.type === "password")
+    password.type = "text"
+  else
+    password.type = "password";
+
+})
+
+document.querySelector('#toggle-password-login').addEventListener('click', function () {
+  let password = document.querySelector("#login-password");
+  if (password.type === "password")
+    password.type = "text"
+  else
+    password.type = "password";
+
+})
+
