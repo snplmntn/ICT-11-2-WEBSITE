@@ -86,7 +86,7 @@ function signup() {
 
       // Declare user variable
       var user = auth.currentUser;
-
+      console.log(user);
       // Get a reference to the "users" node with the user's UID as the child node
       var databaseRef = ref(database, "users/" + user.uid);
 

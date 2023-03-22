@@ -34,25 +34,21 @@
           <span id="user-name"></span>
         </h2>
       </div>
-      <div class="info-announce-contents"></div>
+      <div class="info-announce-contents">
+        <button class="create-post">Create New Post</button>
+      </div>
     </div>
     <main>
-      <section class="dos-landing-page" id="dos"></section>
+      <section class="dos-landing-page" id="dos">
+        <!-- appended post goes here -->
+      </section>
     </main>
     <div class="announcement-wrapper aside-contents">
       <div class="headers">
         <h2 id="add-announcement">Announcements!</h2>
       </div>
       <div class="info-announce-contents" id="new-announcements">
-        <div>
-          <h2>test title</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
-            neque corporis quaerat sint aliquam minima officia unde ullam,
-            ducimus, asperiores velit reiciendis quae eligendi officiis. Id
-            excepturi omnis consectetur quod?
-          </p>
-        </div>
+        <!-- appended announcement divs goes here -->
       </div>
     </div>
   </div>
@@ -75,6 +71,23 @@
       </label>
 
       <button type="button" id="submit-btn">Submit</button>
+    </div>
+  </div>
+
+  <div class="upload-post-container hidden">
+    <input type="button" class="btn-close" value="&times;" />
+    <h2>Create new post</h2>
+    <div class="add-post-container">
+      <label>
+        <textarea name="post" id="textarea" placeholder="Enter text..."></textarea>
+      </label>
+      <div class="container">
+        <div class="checkbox-container">
+          <label for="anonymous">Post Anonymously</label>
+          <input type="checkbox" id="anonymous">
+        </div>
+        <button type="button" id="post-btn">Post</button>
+      </div>
     </div>
   </div>
   <div class="overlay hidden"></div>
