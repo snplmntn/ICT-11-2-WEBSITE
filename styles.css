@@ -1,0 +1,103 @@
+/* COLOR SCHEME */
+
+/* #d8f3dc - light
+#b7e4c7 - medium
+#52b788 - dark */
+
+/* PLEASE DO NOT TOUCH THIS CODE */
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Saira Condensed', sans-serif;
+}
+
+*::-webkit-scrollbar {
+    width: 3px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(70, 70, 70, 0.473);
+    border-radius: 1rem;
+}
+
+/* styles for login page */
+
+
+/* styles for main page */
+body {
+    background-color: #f3fdf5;
+}
+
+nav {
+    background-color: #52b788;
+    height: 4rem;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links a {
+    margin: 0 1rem;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.info-content-main-wrapper {
+    display: flex;
+    height: 100vh;
+}
+
+.aside-contents {
+    width: 15%;
+    height: 100vh;
+    padding: 1rem;
+    padding-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.information-wrapper {
+    border-right: 1px solid #52b7886e;
+}
+
+.announcement-wrapper {
+    width: 20%;
+}
+
+.info-announce-contents {
+    height: 90%;
+    background-color: #d8f3dc;
+    border-radius: 0.5rem;
+}
+
+.headers {
+    background-color: #b7e4c7;
+    border-radius: 1rem;
+    padding: 0.3rem 0;
+}
+
+.headers h2 {
+    text-align: center;
+    font-size: 120%;
+}
+
+main {
+    flex: 1;
+    height: 100vh;
+    /* background-color: rgb(215, 255, 196); */
+    padding: 1rem;
+    padding-top: 5rem;
+    overflow: auto;
+}
+
+section {
+    margin: 0 auto;
+    min-height: 50rem;
+    max-width: 85rem;
+    background-color: #d8f3dc;
+    border-radius: 1rem;
+}
