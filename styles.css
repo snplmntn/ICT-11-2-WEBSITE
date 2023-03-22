@@ -101,3 +101,63 @@ section {
     background-color: #d8f3dc;
     border-radius: 1rem;
 }
+
+button {
+    font-size: 1.2rem;
+    padding: 0 0.2rem;
+    width: 3.8rem;
+    background-color: #52b788;
+    border-radius: 0.5rem;
+    border: 1px solid black;
+    transition: all 200ms;
+}
+
+button:hover {
+    background-color: #439e74;
+    cursor: pointer;
+}
+
+/* modals */
+.logout-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #b7e4c7;
+    width: 20rem;
+    height: 10rem;
+    border-radius: 0.5rem;
+    z-index: 1000;
+}
+
+.btn-close {
+    font-family: inherit;
+    color: rgb(0, 0, 0);
+    position: absolute;
+    top: 1.5%;
+    right: 3%;
+    font-size: 150%;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    transition: all 0.5s;
+}
+
+.hidden {
+    display: none;
+}
