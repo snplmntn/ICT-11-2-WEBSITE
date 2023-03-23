@@ -49,7 +49,7 @@ function checkAuthState() {
       });
 
     } else {
-      window.location.href = "/index.html";
+      window.location.href = "/ICT-11-2-WEBSITE/index.html";
     }
   });
 }
