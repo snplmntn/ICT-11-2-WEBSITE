@@ -25,7 +25,7 @@ function checkAuthState() {
   auth.onAuthStateChanged(function (user) {
     if (load) {
       if (user) {
-        window.location.href = "/dashboard.html";
+        window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
       }
       load = false;
     }
