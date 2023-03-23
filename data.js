@@ -144,7 +144,7 @@ function login() {
           // console.log("Name:", user_data.val().name);
           localStorage.setItem("userName", user_data.val().name);
           console.log(localStorage.getItem("userName"));
-          window.location.href = "/dashboard.html";
+          window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
         });
         // Update last login time
         update(databaseRef, { last_login: Date.now() });
