@@ -32,22 +32,24 @@ const auth = getAuth();
 const database = getDatabase();
 
 let clientUser;
+const name = document.querySelector("#user-name");
+
 function checkAuthState() {
   auth.onAuthStateChanged(function (user) {
     if (user) {
       overlay.classList.add("hidden");
       const databaseRef = ref(database, "users/" + user.uid);
-      clientUser = auth.currentUser;
-      console.log(clientUser);
+      // clientUser = auth.currentUser;
 
       get(databaseRef).then((client) => {
-        // console.log("Name:", user_data.val().name);
-        const name = document.querySelector("#user-name");
         name.textContent = client.val().name;
         clientUser = client;
+        localStorage.setItem("userName", client.val().name);
       });
     } else {
+      //When deployed to github
       window.location.href = "/ICT-11-2-WEBSITE/index.html";
+      // window.location.href = "/index.html";
     }
   });
 }
@@ -61,13 +63,13 @@ window.addEventListener("load", function () {
 });
 
 const logOut = document.querySelector("#logout-button");
-const logOutLink = document.querySelector("#logout-link");
+const logOutLink = document.querySelectorAll(".logout-link");
 const exitBtn = document.querySelectorAll(".btn-close");
 const announce = document.querySelector("#add-announcement");
 const overlay = document.querySelector(".overlay");
 
 logOut.addEventListener("click", function () {
-  // Call the signOut() method to log out the user
+  // Calls the signOut() method to log out the user
   localStorage.removeItem("userName");
   auth
     .signOut()
@@ -79,6 +81,7 @@ logOut.addEventListener("click", function () {
     });
 });
 
+//removes modals
 function toggleModal() {
   document.querySelector(".overlay").classList.add("hidden");
   document.querySelector(".logout-modal").classList.add("hidden");
@@ -86,15 +89,18 @@ function toggleModal() {
   document.querySelector(".upload-post-container").classList.add("hidden");
 }
 
-logOutLink.addEventListener("click", function () {
-  document.querySelector(".overlay").classList.remove("hidden");
-  document.querySelector(".logout-modal").classList.remove("hidden");
+logOutLink.forEach(function (logout) {
+  logout.addEventListener("click", function () {
+    document.querySelector(".overlay").classList.remove("hidden");
+    document.querySelector(".logout-modal").classList.remove("hidden");
+    document.querySelector(".overlay").classList.remove("hidden");
+    mobileNav.classList.add("hidden");
+  });
 });
 
 exitBtn.forEach((btn) => {
   btn.addEventListener("click", toggleModal);
 });
-// exitBtn.addEventListener('click', toggleModal);
 
 window.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
@@ -121,6 +127,7 @@ submitAnnounce.addEventListener("click", function () {
     author: clientUser.val().name,
     title: titleValue.value,
     content: contentValue.value,
+    announementDate: Date.now(),
   };
 
   const announcementsRef = ref(database, "announcements/" + Date.now());
@@ -139,6 +146,8 @@ onValue(announcementsRef, (snapshot) => {
     const announcement = childSnapshot.val();
     const contentValue = announcement.content;
     const titleValue = announcement.title;
+    const author = announcement.author;
+    const datePosted = announcement.announementDate;
 
     let titleExists = false;
     for (let i = 0; i < announcementTitles.length; i++) {
@@ -153,8 +162,54 @@ onValue(announcementsRef, (snapshot) => {
       divCreate.classList.add("announcement");
       const titleCreate = document.createElement("h2");
       const contentCreate = document.createElement("p");
+      const postedDateCreate = document.createElement("span");
 
       announcementTitles.push(titleValue);
+
+      if (datePosted !== "") {
+        let postTime = Math.floor((new Date() - datePosted) / 1000);
+
+        if (postTime < 60)
+          postedDateCreate.textContent = `${author}: ${postTime} seconds ago`;
+
+        if (postTime >= 60 && postTime < 120) {
+          postedDateCreate.textContent = `${author}: ${Math.trunc(
+            postTime / 60
+          )} minute ago`;
+        } else if (postTime >= 120) {
+          postedDateCreate.textContent = `${author}: ${Math.trunc(
+            postTime / 60
+          )} minutes ago`;
+        }
+
+        if (postTime >= 3600 && postTime < 7200) {
+          postedDateCreate.textContent = `${author}: ${Math.trunc(
+            postTime / 3600
+          )} hour ago`;
+        } else if (postTime >= 7200)
+          postedDateCreate.textContent = `${author}: ${Math.trunc(
+            postTime / 3600
+          )} hours ago`;
+
+        if (postTime >= 86400 && postTime < 172800)
+          postedDateCreate.textContent = `${author}: ${Math.trunc(
+            postTime / 86400
+          )} day ago`;
+        else if (postTime >= 172800)
+          postedDateCreate.textContent = `${author}: ${Math.trunc(
+            postTime / 86400
+          )} days ago`;
+
+        if (postTime >= 604800 && postTime < 691200)
+          postedDateCreate.textContent = `${author}: ${Math.trunc(
+            postTime / 604800
+          )} week ago`;
+        else if (postTime >= 691200) {
+          let postedDate = new Date(datePosted);
+          let dateString = postedDate.toLocaleDateString();
+          postedDateCreate.textContent = `${author}: ${dateString}`;
+        }
+      }
 
       titleCreate.innerHTML = titleValue;
       contentCreate.innerHTML = contentValue;
@@ -168,13 +223,15 @@ onValue(announcementsRef, (snapshot) => {
 
       divCreate.appendChild(titleCreate);
       divCreate.appendChild(contentCreate);
+      divCreate.appendChild(postedDateCreate);
     }
   });
 });
 
 // POST FUNCTIONS!!
 const createPostBtn = document.querySelector(".create-post");
-const textArea = document.querySelector("#textarea");
+const subject = document.querySelector("#post-subject");
+const content = document.querySelector("#post-content");
 
 createPostBtn.addEventListener("click", function () {
   document.querySelector(".overlay").classList.remove("hidden");
@@ -182,70 +239,180 @@ createPostBtn.addEventListener("click", function () {
 });
 
 //designs for textarea
-textArea.addEventListener("keyup", function (e) {
-  textArea.style.height = "auto";
+content.addEventListener("keyup", function (e) {
+  content.style.height = "auto";
   let scrollHeight = e.target.scrollHeight;
-  textArea.style.height = `${scrollHeight}px`;
+  content.style.height = `${scrollHeight}px`;
 });
 
 //appending posts
 const post = document.querySelector("#post-btn");
 const allPosts = document.querySelector("#dos");
-const postArrays = [];
-let j = 0;
+const checkBox = document.querySelector("#anonymous");
+const errorMessage = document.querySelector("#post-error");
+
 post.addEventListener("click", function () {
-  //CREATE NEW ELEMENTS
-  const postDivCreate = document.createElement("div");
-  postDivCreate.classList.add("post");
+  if (subject.value === "" || content.value === "") {
+    errorMessage.textContent = "Subject or Content is not filled.";
+    return;
+  }
+
+  let postedBy;
+  if (checkBox.checked == true) postedBy = "Anonymous";
+  else postedBy = `Posted By: ${clientUser.val().name}`;
 
   const postContent = {
     author: clientUser.val().name,
-    content: textArea.value,
-    postedBy: `Posted By: ${clientUser.val().name}`,
+    subject: subject.value,
+    content: content.value,
+    postedBy: postedBy,
+    datePosted: Date.now(),
   };
 
   const postRefs = ref(database, "posts/" + Date.now());
   set(postRefs, postContent);
 
   toggleModal();
-  textArea.value = "";
+  subject.value = "";
+  content.value = "";
+  checkBox.checked = false;
+  errorMessage.textContent = "";
 });
 
 const postRefs = ref(database, "posts/");
 let postContents = [];
 
+document.querySelector(".my-posts").addEventListener("click", function () {
+  if (localStorage.getItem("IsMyPosts") === "true") {
+    localStorage.setItem("IsMyPosts", "false");
+  } else {
+    localStorage.setItem("IsMyPosts", "true");
+  }
+  location.reload();
+});
+
 onValue(postRefs, (snapshot) => {
   snapshot.forEach((childSnapshot) => {
     const post = childSnapshot.val();
-    const contentValue = post.content;
-    const postedBy = post.postedBy;
 
-    let postExists = false;
-    for (let i = 0; i < postContents.length; i++) {
-      if (postContents[i] === contentValue) {
-        postExists = true;
-        break;
+    let shouldSee = true;
+    if (localStorage.getItem("IsMyPosts") === "true") {
+      if (post.author !== localStorage.getItem("userName")) {
+        shouldSee = false;
       }
     }
 
-    if (!postExists) {
+    if (shouldSee) {
+      //Database Ref
+      let postSubject = post.subject;
+      const postContentValue = post.content;
+      const postedBy = post.postedBy;
+      let datePosted = post.datePosted;
+
+      if (postSubject === undefined) postSubject = "";
+      if (datePosted === undefined) datePosted = "";
+
+      //HTML Ref
       const postDivCreate = document.createElement("div");
       postDivCreate.classList.add("post");
+      const postSubjectCreate = document.createElement("h2");
       const postContentCreate = document.createElement("p");
-      const postedByCreate = document.createElement("h2");
+      const postedByCreate = document.createElement("p");
+      const postedDateCreate = document.createElement("span");
 
-      postContents.push(contentValue);
+      postContents.push(post);
 
+      postSubjectCreate.innerHTML = postSubject;
+      postContentCreate.innerHTML = postContentValue;
       postedByCreate.innerHTML = postedBy;
-      postContentCreate.innerHTML = contentValue;
+      postedDateCreate.innerHTML = datePosted;
+
+      if (datePosted !== "") {
+        let postTime = Math.floor((new Date() - datePosted) / 1000);
+
+        if (postTime < 60)
+          postedDateCreate.textContent = postTime + " seconds ago";
+
+        if (postTime >= 60 && postTime < 120) {
+          postedDateCreate.textContent =
+            Math.trunc(postTime / 60) + "minute ago";
+        } else if (postTime >= 120) {
+          postedDateCreate.textContent =
+            Math.trunc(postTime / 60) + "minutes ago";
+        }
+
+        if (postTime >= 3600 && postTime < 7200) {
+          postedDateCreate.textContent =
+            Math.trunc(postTime / 3600) + "hour ago";
+        } else if (postTime >= 7200)
+          postedDateCreate.textContent =
+            Math.trunc(postTime / 3600) + "hours ago";
+
+        if (postTime >= 86400 && postTime < 172800)
+          postedDateCreate.textContent =
+            Math.trunc(postTime / 86400) + "day ago";
+        else if (postTime >= 172800)
+          postedDateCreate.textContent =
+            Math.trunc(postTime / 86400) + "days ago";
+
+        if (postTime >= 604800 && postTime < 691200)
+          postedDateCreate.textContent =
+            Math.trunc(postTime / 604800) + "week ago";
+        else if (postTime >= 691200) {
+          let postedDate = new Date(datePosted);
+          let dateString = postedDate.toLocaleDateString();
+          postedDateCreate.textContent = "Posted on " + dateString;
+        }
+      }
 
       if (document.querySelector(".post")) {
         const firstChild = document.querySelector(".post");
         allPosts.insertBefore(postDivCreate, firstChild);
       } else allPosts.appendChild(postDivCreate);
 
-      postDivCreate.appendChild(postedByCreate);
+      postDivCreate.appendChild(postSubjectCreate);
       postDivCreate.appendChild(postContentCreate);
+      postDivCreate.appendChild(postedByCreate);
+      postDivCreate.appendChild(postedDateCreate);
     }
   });
+});
+
+//collapsible navbar
+const navIcon = document.querySelector(".hamburgur-icon");
+const mobileNav = document.getElementById("nav-mobile");
+
+navIcon.addEventListener("click", function () {
+  mobileNav.classList.toggle("hidden");
+  document.querySelector(".overlay").classList.toggle("hidden");
+});
+
+// functions for post and announcement in nav
+const navPost = document.getElementById("nav-post");
+const navAnnounce = document.getElementById("nav-announce");
+const mobileNewsFeed = document.getElementById("nf");
+const asideContents = document.querySelectorAll(".aside-contents");
+navPost.addEventListener("click", function () {
+  document.querySelector("main").classList.add("hidden");
+  document.querySelector(".information-wrapper").style.display = "flex";
+  document.querySelector(".announcement-wrapper").style.display = "none";
+  document.querySelector(".overlay").classList.toggle("hidden");
+  mobileNav.classList.toggle("hidden");
+});
+
+navAnnounce.addEventListener("click", function () {
+  document.querySelector("main").classList.add("hidden");
+  document.querySelector(".announcement-wrapper").style.display = "flex";
+  document.querySelector(".information-wrapper").style.display = "none";
+  document.querySelector(".overlay").classList.toggle("hidden");
+  mobileNav.classList.toggle("hidden");
+});
+
+mobileNewsFeed.addEventListener("click", function () {
+  asideContents.forEach((content) => {
+    content.style.display = "none";
+  });
+  document.querySelector("#main").classList.remove("hidden");
+  mobileNav.classList.toggle("hidden");
+  document.querySelector(".overlay").classList.toggle("hidden");
 });

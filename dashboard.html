@@ -1,105 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dos</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Electrolize&family=Rubik+Mono+One&family=Saira+Condensed:wght@300&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dos</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Electrolize&family=Rubik+Mono+One&family=Saira+Condensed:wght@300&display=swap"
-    rel="stylesheet" />
-</head>
-
-<body>
-  <nav>
-    <div class="logo-container">
-      <h2>DOS</h2>
-    </div>
-    <div class="nav-links">
-      <a href="#dos">Dos</a>
-      <a href="">Link</a>
-      <a href="">Link2</a>
-      <button id="logout-link">Logout</button>
-    </div>
-  </nav>
-  <div class="info-content-main-wrapper">
-    <div class="information-wrapper aside-contents">
-      <div class="headers">
-        <h2>
-          Hello,
-          <span id="user-name"></span>
-        </h2>
+  <body>
+    <nav>
+      <div class="logo-container">
+        <h2>DOS</h2>
       </div>
-      <div class="info-announce-contents">
-        <button class="create-post">Create New Post</button>
-      </div>
-    </div>
-    <main>
-      <section class="dos-landing-page" id="dos">
-        <!-- appended post goes here -->
-      </section>
-    </main>
-    <div class="announcement-wrapper aside-contents">
-      <div class="headers">
-        <h2 id="add-announcement">Announcements!</h2>
-      </div>
-      <div class="info-announce-contents" id="new-announcements">
-        <!-- appended announcement divs goes here -->
-      </div>
-    </div>
-  </div>
-  <form action="index.html" class="logout-modal hidden">
-    <input type="button" class="btn-close" value="&times;" />
-    <h2>Are you sure you want to Logout?</h2>
-    <button id="logout-button">Logout</button>
-  </form>
 
-  <div class="announce-container hidden">
-    <input type="button" class="btn-close" value="&times;" />
-    <h2>Create new announcement</h2>
-    <div class="add-announce-container">
-      <label>
-        <input type="text" id="title" placeholder="Title" />
-      </label>
-
-      <label>
-        <input type="text" id="content" placeholder="Add text..." />
-      </label>
-
-      <button type="button" id="submit-btn">Submit</button>
-    </div>
-  </div>
-
-  <div class="upload-post-container hidden">
-    <input type="button" class="btn-close" value="&times;" />
-    <h2>Create new post</h2>
-    <div class="add-post-container">
-      <label>
-        <textarea name="post" id="textarea" placeholder="Enter text..."></textarea>
-      </label>
-      <div class="container">
-        <div class="checkbox-container">
-          <label for="anonymous">Post Anonymously</label>
-          <input type="checkbox" id="anonymous">
+      <div class="nav-container">
+        <div class="nav-links" id="nav-desktop">
+          <a href="#dos">Dos</a>
+          <button class="my-posts">My Posts</button>
+          <button class="logout-link">Logout</button>
         </div>
-        <button type="button" id="post-btn">Post</button>
+        <div class="hamburgur-icon">
+          <div class="line some-line-styles"></div>
+          <div class="line"></div>
+          <div class="line some-line-styles"></div>
+        </div>
+      </div>
+
+      <div class="nav-links collapsed-nav hidden" id="nav-mobile">
+        <p id="nf">Dos</p>
+        <button class="my-posts">My Posts</button>
+        <p id="nav-post">Create Post</p>
+        <p id="nav-announce">Announcements</p>
+        <button class="logout-link">Logout</button>
+      </div>
+    </nav>
+    <div class="info-content-main-wrapper">
+      <div class="information-wrapper aside-contents">
+        <div class="headers">
+          <h2>
+            Hello
+            <span id="user-name"></span>!
+          </h2>
+        </div>
+        <div class="info-announce-contents">
+          <button id="add-announcement">Create New Announcement</button>
+          <button class="create-post">Create New Post</button>
+        </div>
+      </div>
+      <main id="main">
+        <section class="dos-landing-page" id="dos">
+          <h2 id="newsfeed">Newsfeed</h2>
+          <!-- appended post goes here -->
+        </section>
+        <!-- <section class="dos-landing-page hidden" id="dos">
+          <h2 id="my-posts">Newsfeed</h2>
+           appended post goes here 
+        </section> -->
+      </main>
+      <div class="announcement-wrapper aside-contents">
+        <div class="headers">
+          <h2>Announcements!</h2>
+        </div>
+        <div class="info-announce-contents" id="new-announcements">
+          <!-- appended announcement divs goes here -->
+        </div>
       </div>
     </div>
-  </div>
-  <div class="overlay hidden"></div>
+    <form action="index.html" class="logout-modal hidden">
+      <input type="button" class="btn-close" value="&times;" />
+      <h2>Are you sure you want to Logout?</h2>
+      <button id="logout-button">Logout</button>
+    </form>
 
-  <footer>
-    <div class="preloader">
-      Loading
-      <span class="preloader-span"></span>
+    <div class="announce-container hidden">
+      <input type="button" class="btn-close" value="&times;" />
+      <h2>Create new announcement</h2>
+      <div class="add-announce-container">
+        <label>
+          <input type="text" id="title" placeholder="Title" />
+        </label>
+
+        <label>
+          <input type="text" id="content" placeholder="Add text..." />
+        </label>
+
+        <button type="button" id="submit-btn">Submit</button>
+      </div>
     </div>
-  </footer>
 
-  <script type="module" src="script.js"></script>
-</body>
+    <div class="upload-post-container hidden">
+      <input type="button" class="btn-close" value="&times;" />
+      <h2>Create new post</h2>
+      <div class="add-post-container">
+        <div class="container">
+          <label>
+            <textarea
+              name="post-subject"
+              id="post-subject"
+              placeholder="Enter subject..."
+            ></textarea>
+          </label>
 
+          <label>
+            <textarea
+              name="post-content"
+              id="post-content"
+              placeholder="Enter text..."
+            ></textarea>
+          </label>
+          <div id="post-error" class="error"></div>
+        </div>
+        <div class="container">
+          <div class="checkbox-container">
+            <label for="anonymous">Post Anonymously</label>
+            <input type="checkbox" id="anonymous" />
+          </div>
+          <button type="button" id="post-btn">Post</button>
+        </div>
+      </div>
+    </div>
+    <div class="overlay hidden"></div>
+
+    <footer>
+      <div class="preloader">
+        Loading
+        <span class="preloader-span"></span>
+      </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+  </body>
 </html>

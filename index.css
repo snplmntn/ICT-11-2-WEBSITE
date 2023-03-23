@@ -1,22 +1,21 @@
 /* COLOR SCHEME */
 
-:root {
+/* :root {
   --bodycolor: #f3fdf5 --light: #d8f3dc --medium:#b7e4c7 --dark:#52b788
-}
-
+} */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Saira Condensed', sans-serif;
+  font-family: "Saira Condensed", sans-serif;
 }
 
 body {
   font-family: Arial, sans-serif;
   background-color: #b7e4c7;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .logo {
@@ -26,7 +25,7 @@ body {
 .container-all {
   display: flex;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   justify-content: space-between;
   align-items: center;
   padding: 2rem;
@@ -41,7 +40,7 @@ body {
 
 .login-signin-container {
   height: 100%;
-  flex: 1
+  flex: 1;
 }
 
 .contents {
@@ -50,6 +49,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 1.5rem;
 }
 
 .form-container {
@@ -65,8 +65,8 @@ body {
   height: 100%;
 }
 
-.container-signup>form,
-.container-login>form {
+.container-signup > form,
+.container-login > form {
   text-align: center;
   /* background-color: #09c86d; */
   background: linear-gradient(to right, #09c86d, #4bbe79);
@@ -102,7 +102,6 @@ label {
   position: relative;
   margin-bottom: 15px;
 }
-
 
 input[type="text"],
 input[type="password"],
@@ -160,4 +159,61 @@ h1 {
 
 p {
   font-size: 1.3rem;
+}
+
+@media (max-width: 1050px) {
+  .container-signup > form,
+  .container-login > form {
+    width: 18rem;
+    height: 28rem;
+  }
+
+  .desc-containers {
+    justify-content: space-evenly;
+    height: 28rem;
+  }
+  .desc-containers p {
+    font-size: 100%;
+  }
+
+  .desc-containers h1 {
+    font-size: 350%;
+  }
+}
+
+@media (max-width: 705px) {
+  .container-all {
+    min-height: 100vh;
+    padding: 1rem;
+    flex-direction: column-reverse;
+  }
+
+  .contents {
+    align-items: center;
+  }
+
+  .desc-containers {
+    display: block;
+    min-height: 60vh;
+    width: 20rem;
+  }
+
+  .desc-containers h1,
+  .desc-containers p {
+    text-align: center;
+  }
+}
+
+@media (max-width: 350px) {
+  .container-signup > form,
+  .container-login > form {
+    width: 15rem;
+    height: 25rem;
+  }
+
+  .desc-containers {
+    display: block;
+    min-height: 60vh;
+    width: 15rem;
+  }
 }

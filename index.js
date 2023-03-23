@@ -39,8 +39,15 @@ const toggleLoginPassword = function () {
 
 const toggleSignupPassword = function () {
   let password = document.querySelector("#signup-password");
-  if (password.type === "password") password.type = "text";
-  else password.type = "password";
+  let confirmPassword = document.querySelector("#signup-confirm-password");
+  if (password.type === "password" && confirmPassword.type === "password") {
+    password.type = "text";
+    confirmPassword.type = "text";
+  } else {
+    password.type = "password";
+    confirmPassword.type = "password";
+  }
+
   faEyeS.classList.toggle("hidden");
   faEyeS.classList.toggle("show");
   faEyeSlashS.classList.toggle("show");

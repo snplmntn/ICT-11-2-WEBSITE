@@ -25,7 +25,10 @@ function checkAuthState() {
   auth.onAuthStateChanged(function (user) {
     if (load) {
       if (user) {
+        //When deployed to github
         window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
+
+        // window.location.href = "/dashboard.html";
       }
       load = false;
     }
@@ -61,9 +64,12 @@ let lError = document.getElementById("login-error");
 
 // Signup function
 function signup() {
-  var email = document.getElementById("signup-email").value;
-  var name = document.getElementById("signup-name").value;
-  var password = document.getElementById("signup-password").value;
+  const email = document.getElementById("signup-email").value;
+  const name = document.getElementById("signup-name").value;
+  const password = document.getElementById("signup-password").value;
+  const confirmPassword = document.getElementById(
+    "signup-confirm-password"
+  ).value;
 
   // Validate input fields
   if (email === "" || name === "" || password === "") {
@@ -77,6 +83,11 @@ function signup() {
   }
   if (validate_password(password) == false) {
     sError.textContent = "Password must consist of atleast 6 characters.";
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    sError.textContent = "Password do not match.";
     return;
   }
 
@@ -141,10 +152,9 @@ function login() {
         var databaseRef = ref(database, "users/" + user.uid);
         // Retrieve User data
         get(databaseRef).then((user_data) => {
-          // console.log("Name:", user_data.val().name);
-          localStorage.setItem("userName", user_data.val().name);
-          console.log(localStorage.getItem("userName"));
+          //When deployed to github
           window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
+          // window.location.href = "/dashboard.html";
         });
         // Update last login time
         update(databaseRef, { last_login: Date.now() });
