@@ -48,8 +48,8 @@ function checkAuthState() {
       });
     } else {
       //When deployed to github
-      window.location.href = "/ICT-11-2-WEBSITE/index.html";
-      // window.location.href = "/index.html";
+      // window.location.href = "/ICT-11-2-WEBSITE/index.html";
+      window.location.href = "/index.html";
     }
   });
 }
@@ -282,99 +282,95 @@ post.addEventListener("click", function () {
 const postRefs = ref(database, "posts/");
 let postContents = [];
 
-document.querySelector(".my-posts").addEventListener("click", function () {
-  if (localStorage.getItem("IsMyPosts") === "true") {
-    localStorage.setItem("IsMyPosts", "false");
-  } else {
-    localStorage.setItem("IsMyPosts", "true");
-  }
-  location.reload();
+document.querySelectorAll(".my-posts").forEach(function (myPost) {
+  myPost.addEventListener("click", function () {
+    if (localStorage.getItem("IsMyPosts") === "true") {
+      localStorage.setItem("IsMyPosts", "false");
+    } else {
+      localStorage.setItem("IsMyPosts", "true");
+    }
+    location.reload();
+  });
 });
 
 onValue(postRefs, (snapshot) => {
   snapshot.forEach((childSnapshot) => {
     const post = childSnapshot.val();
 
-    let shouldSee = true;
     if (localStorage.getItem("IsMyPosts") === "true") {
       if (post.author !== localStorage.getItem("userName")) {
-        shouldSee = false;
+        return;
       }
     }
 
-    if (shouldSee) {
-      //Database Ref
-      let postSubject = post.subject;
-      const postContentValue = post.content;
-      const postedBy = post.postedBy;
-      let datePosted = post.datePosted;
+    //Database Ref
+    let postSubject = post.subject;
+    const postContentValue = post.content;
+    const postedBy = post.postedBy;
+    let datePosted = post.datePosted;
 
-      if (postSubject === undefined) postSubject = "";
-      if (datePosted === undefined) datePosted = "";
+    if (postSubject === undefined) postSubject = "";
+    if (datePosted === undefined) datePosted = "";
 
-      //HTML Ref
-      const postDivCreate = document.createElement("div");
-      postDivCreate.classList.add("post");
-      const postSubjectCreate = document.createElement("h2");
-      const postContentCreate = document.createElement("p");
-      const postedByCreate = document.createElement("p");
-      const postedDateCreate = document.createElement("span");
+    //HTML Ref
+    const postDivCreate = document.createElement("div");
+    postDivCreate.classList.add("post");
+    const postSubjectCreate = document.createElement("h2");
+    const postContentCreate = document.createElement("p");
+    const postedByCreate = document.createElement("p");
+    const postedDateCreate = document.createElement("span");
 
-      postContents.push(post);
+    postContents.push(post);
 
-      postSubjectCreate.innerHTML = postSubject;
-      postContentCreate.innerHTML = postContentValue;
-      postedByCreate.innerHTML = postedBy;
-      postedDateCreate.innerHTML = datePosted;
+    postSubjectCreate.innerHTML = postSubject;
+    postContentCreate.innerHTML = postContentValue;
+    postedByCreate.innerHTML = postedBy;
+    postedDateCreate.innerHTML = datePosted;
 
-      if (datePosted !== "") {
-        let postTime = Math.floor((new Date() - datePosted) / 1000);
+    if (datePosted !== "") {
+      let postTime = Math.floor((new Date() - datePosted) / 1000);
 
-        if (postTime < 60)
-          postedDateCreate.textContent = postTime + " seconds ago";
+      if (postTime < 60)
+        postedDateCreate.textContent = postTime + " seconds ago";
 
-        if (postTime >= 60 && postTime < 120) {
-          postedDateCreate.textContent =
-            Math.trunc(postTime / 60) + "minute ago";
-        } else if (postTime >= 120) {
-          postedDateCreate.textContent =
-            Math.trunc(postTime / 60) + "minutes ago";
-        }
-
-        if (postTime >= 3600 && postTime < 7200) {
-          postedDateCreate.textContent =
-            Math.trunc(postTime / 3600) + "hour ago";
-        } else if (postTime >= 7200)
-          postedDateCreate.textContent =
-            Math.trunc(postTime / 3600) + "hours ago";
-
-        if (postTime >= 86400 && postTime < 172800)
-          postedDateCreate.textContent =
-            Math.trunc(postTime / 86400) + "day ago";
-        else if (postTime >= 172800)
-          postedDateCreate.textContent =
-            Math.trunc(postTime / 86400) + "days ago";
-
-        if (postTime >= 604800 && postTime < 691200)
-          postedDateCreate.textContent =
-            Math.trunc(postTime / 604800) + "week ago";
-        else if (postTime >= 691200) {
-          let postedDate = new Date(datePosted);
-          let dateString = postedDate.toLocaleDateString();
-          postedDateCreate.textContent = "Posted on " + dateString;
-        }
+      if (postTime >= 60 && postTime < 120) {
+        postedDateCreate.textContent = Math.trunc(postTime / 60) + "minute ago";
+      } else if (postTime >= 120) {
+        postedDateCreate.textContent =
+          Math.trunc(postTime / 60) + "minutes ago";
       }
 
-      if (document.querySelector(".post")) {
-        const firstChild = document.querySelector(".post");
-        allPosts.insertBefore(postDivCreate, firstChild);
-      } else allPosts.appendChild(postDivCreate);
+      if (postTime >= 3600 && postTime < 7200) {
+        postedDateCreate.textContent = Math.trunc(postTime / 3600) + "hour ago";
+      } else if (postTime >= 7200)
+        postedDateCreate.textContent =
+          Math.trunc(postTime / 3600) + "hours ago";
 
-      postDivCreate.appendChild(postSubjectCreate);
-      postDivCreate.appendChild(postContentCreate);
-      postDivCreate.appendChild(postedByCreate);
-      postDivCreate.appendChild(postedDateCreate);
+      if (postTime >= 86400 && postTime < 172800)
+        postedDateCreate.textContent = Math.trunc(postTime / 86400) + "day ago";
+      else if (postTime >= 172800)
+        postedDateCreate.textContent =
+          Math.trunc(postTime / 86400) + "days ago";
+
+      if (postTime >= 604800 && postTime < 691200)
+        postedDateCreate.textContent =
+          Math.trunc(postTime / 604800) + "week ago";
+      else if (postTime >= 691200) {
+        let postedDate = new Date(datePosted);
+        let dateString = postedDate.toLocaleDateString();
+        postedDateCreate.textContent = "Posted on " + dateString;
+      }
     }
+
+    if (document.querySelector(".post")) {
+      const firstChild = document.querySelector(".post");
+      allPosts.insertBefore(postDivCreate, firstChild);
+    } else allPosts.appendChild(postDivCreate);
+
+    postDivCreate.appendChild(postSubjectCreate);
+    postDivCreate.appendChild(postContentCreate);
+    postDivCreate.appendChild(postedByCreate);
+    postDivCreate.appendChild(postedDateCreate);
   });
 });
 
