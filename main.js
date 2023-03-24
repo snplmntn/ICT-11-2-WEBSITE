@@ -155,28 +155,28 @@ onValue(announcementsRef, (snapshot) => {
         break;
       }
 
-      // Store the last announcement in localStorage
-      var lastAnnouncement = localStorage.getItem("lastAnnouncement");
+      // // Store the last announcement in localStorage
+      // var lastAnnouncement = localStorage.getItem("lastAnnouncement");
 
-      // Check if the new announcement is different from the last announcement
-      if (lastAnnouncement !== titleValue + contentValue) {
-        // Update the last announcement in localStorage
-        localStorage.setItem("lastAnnouncement", titleValue + contentValue);
+      // // Check if the new announcement is different from the last announcement
+      // if (lastAnnouncement !== titleValue + contentValue) {
+      //   // Update the last announcement in localStorage
+      //   localStorage.setItem("lastAnnouncement", titleValue + contentValue);
 
-        // Check if the browser supports the Notification API
-        if ("Notification" in window) {
-          // Request permission to show notifications
-          Notification.requestPermission().then(function (result) {
-            // Send the notification
-            var notification = new Notification(
-              `New Announcement: ${titleValue}`,
-              {
-                body: `${contentValue}`,
-              }
-            );
-          });
-        }
-      }
+      //   // Check if the browser supports the Notification API
+      //   if ("Notification" in window) {
+      //     // Request permission to show notifications
+      //     Notification.requestPermission().then(function (result) {
+      //       // Send the notification
+      //       var notification = new Notification(
+      //         `New Announcement: ${titleValue}`,
+      //         {
+      //           body: `${contentValue}`,
+      //         }
+      //       );
+      //     });
+      //   }
+      // }
     }
 
     if (!titleExists) {
