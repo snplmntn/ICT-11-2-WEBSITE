@@ -48,8 +48,8 @@ function checkAuthState() {
       });
     } else {
       //When deployed to github
-      window.location.href = "/ICT-11-2-WEBSITE/index.html";
-      //window.location.href = "/index.html";
+      // window.location.href = "/ICT-11-2-WEBSITE/index.html";
+      window.location.href = "index.html";
     }
   });
 }
@@ -280,99 +280,213 @@ post.addEventListener("click", function () {
 });
 
 const postRefs = ref(database, "posts/");
-let postContents = [];
+
+const loadPosts = function () {
+  // Listen for changes in the database and update UI accordingly
+  onValue(postRefs, (snapshot) => {
+    const allPosts = document.querySelector(".dos-landing-page");
+    const newsFeedTitle = allPosts.firstElementChild; // get the first child element (h2)
+
+    if (localStorage.getItem("IsMyPosts") === "true") {
+      newsFeedTitle.textContent = "My Posts";
+    } else newsFeedTitle.textContent = "Newsfeed";
+
+    allPosts.innerHTML = ""; // remove all other child elements
+    allPosts.appendChild(newsFeedTitle); // append the h2 element back to the .dos-landing-page element
+
+    snapshot.forEach((childSnapshot) => {
+      const post = childSnapshot.val();
+
+      if (localStorage.getItem("IsMyPosts") === "true") {
+        if (post.author !== localStorage.getItem("userName")) {
+          return;
+        }
+      }
+
+      //Database Ref
+      let postSubject = post.subject;
+      const postContentValue = post.content;
+      const postedBy = post.postedBy;
+      let datePosted = post.datePosted;
+
+      if (postSubject === undefined) postSubject = "";
+      if (datePosted === undefined) datePosted = "";
+
+      //HTML Ref
+      const postDivCreate = document.createElement("div");
+      postDivCreate.classList.add("post");
+      const postSubjectCreate = document.createElement("h2");
+      const postContentCreate = document.createElement("p");
+      const postedByCreate = document.createElement("p");
+      const postedDateCreate = document.createElement("span");
+
+      postSubjectCreate.innerHTML = postSubject;
+      postContentCreate.innerHTML = postContentValue;
+      postedByCreate.innerHTML = postedBy;
+      postedDateCreate.innerHTML = datePosted;
+
+      if (datePosted !== "") {
+        const postTime = Math.floor((new Date() - datePosted) / 1000);
+
+        let timeString = "";
+        switch (true) {
+          case postTime < 60:
+            timeString = postTime + " seconds ago";
+            break;
+          case postTime < 120:
+            timeString = Math.trunc(postTime / 60) + " minute ago";
+            break;
+          case postTime < 3600:
+            timeString = Math.trunc(postTime / 60) + " minutes ago";
+            break;
+          case postTime < 7200:
+            timeString = Math.trunc(postTime / 3600) + " hour ago";
+            break;
+          case postTime < 86400:
+            timeString = Math.trunc(postTime / 3600) + " hours ago";
+            break;
+          case postTime < 172800:
+            timeString = Math.trunc(postTime / 86400) + " day ago";
+            break;
+          case postTime < 604800:
+            timeString = Math.trunc(postTime / 86400) + " days ago";
+            break;
+          case postTime < 691200:
+            timeString = Math.trunc(postTime / 604800) + " week ago";
+            break;
+          default:
+            const postedDate = new Date(datePosted);
+            const dateString = postedDate.toLocaleDateString();
+            timeString = "Posted on " + dateString;
+            break;
+        }
+        postedDateCreate.textContent = timeString;
+      }
+
+      if (document.querySelector(".post")) {
+        const firstChild = document.querySelector(".post");
+        allPosts.insertBefore(postDivCreate, firstChild);
+      } else allPosts.appendChild(postDivCreate);
+
+      postDivCreate.appendChild(postSubjectCreate);
+      postDivCreate.appendChild(postContentCreate);
+      postDivCreate.appendChild(postedByCreate);
+      postDivCreate.appendChild(postedDateCreate);
+    });
+  });
+};
 
 document.querySelectorAll(".my-posts").forEach(function (myPost) {
   myPost.addEventListener("click", function () {
-    if (localStorage.getItem("IsMyPosts") === "true") {
-      localStorage.setItem("IsMyPosts", "false");
-    } else {
-      localStorage.setItem("IsMyPosts", "true");
-    }
-    location.reload();
+    localStorage.setItem("IsMyPosts", "true");
+    loadPosts();
   });
 });
 
-onValue(postRefs, (snapshot) => {
-  snapshot.forEach((childSnapshot) => {
-    const post = childSnapshot.val();
-
-    if (localStorage.getItem("IsMyPosts") === "true") {
-      if (post.author !== localStorage.getItem("userName")) {
-        return;
-      }
-    }
-
-    //Database Ref
-    let postSubject = post.subject;
-    const postContentValue = post.content;
-    const postedBy = post.postedBy;
-    let datePosted = post.datePosted;
-
-    if (postSubject === undefined) postSubject = "";
-    if (datePosted === undefined) datePosted = "";
-
-    //HTML Ref
-    const postDivCreate = document.createElement("div");
-    postDivCreate.classList.add("post");
-    const postSubjectCreate = document.createElement("h2");
-    const postContentCreate = document.createElement("p");
-    const postedByCreate = document.createElement("p");
-    const postedDateCreate = document.createElement("span");
-
-    postContents.push(post);
-
-    postSubjectCreate.innerHTML = postSubject;
-    postContentCreate.innerHTML = postContentValue;
-    postedByCreate.innerHTML = postedBy;
-    postedDateCreate.innerHTML = datePosted;
-
-    if (datePosted !== "") {
-      let postTime = Math.floor((new Date() - datePosted) / 1000);
-
-      if (postTime < 60)
-        postedDateCreate.textContent = postTime + " seconds ago";
-
-      if (postTime >= 60 && postTime < 120) {
-        postedDateCreate.textContent = Math.trunc(postTime / 60) + "minute ago";
-      } else if (postTime >= 120) {
-        postedDateCreate.textContent =
-          Math.trunc(postTime / 60) + "minutes ago";
-      }
-
-      if (postTime >= 3600 && postTime < 7200) {
-        postedDateCreate.textContent = Math.trunc(postTime / 3600) + "hour ago";
-      } else if (postTime >= 7200)
-        postedDateCreate.textContent =
-          Math.trunc(postTime / 3600) + "hours ago";
-
-      if (postTime >= 86400 && postTime < 172800)
-        postedDateCreate.textContent = Math.trunc(postTime / 86400) + "day ago";
-      else if (postTime >= 172800)
-        postedDateCreate.textContent =
-          Math.trunc(postTime / 86400) + "days ago";
-
-      if (postTime >= 604800 && postTime < 691200)
-        postedDateCreate.textContent =
-          Math.trunc(postTime / 604800) + "week ago";
-      else if (postTime >= 691200) {
-        let postedDate = new Date(datePosted);
-        let dateString = postedDate.toLocaleDateString();
-        postedDateCreate.textContent = "Posted on " + dateString;
-      }
-    }
-
-    if (document.querySelector(".post")) {
-      const firstChild = document.querySelector(".post");
-      allPosts.insertBefore(postDivCreate, firstChild);
-    } else allPosts.appendChild(postDivCreate);
-
-    postDivCreate.appendChild(postSubjectCreate);
-    postDivCreate.appendChild(postContentCreate);
-    postDivCreate.appendChild(postedByCreate);
-    postDivCreate.appendChild(postedDateCreate);
+document.querySelectorAll(".home").forEach(function (myPost) {
+  myPost.addEventListener("click", function () {
+    localStorage.setItem("IsMyPosts", "false");
+    loadPosts();
   });
 });
+
+//Loads the posts when u enter the dashboard
+loadPosts();
+
+// const postRefs = ref(database, "posts/");
+// let postContents = [];
+
+// document.querySelectorAll(".my-posts").forEach(function (myPost) {
+//   myPost.addEventListener("click", function () {
+//     if (localStorage.getItem("IsMyPosts") === "true") {
+//       localStorage.setItem("IsMyPosts", "false");
+//     } else {
+//       localStorage.setItem("IsMyPosts", "true");
+//     }
+//     location.reload();
+//   });
+// });
+
+// onValue(postRefs, (snapshot) => {
+//   snapshot.forEach((childSnapshot) => {
+//     const post = childSnapshot.val();
+
+//     if (localStorage.getItem("IsMyPosts") === "true") {
+//       if (post.author !== localStorage.getItem("userName")) {
+//         return;
+//       }
+//     }
+
+//     //Database Ref
+//     let postSubject = post.subject;
+//     const postContentValue = post.content;
+//     const postedBy = post.postedBy;
+//     let datePosted = post.datePosted;
+
+//     if (postSubject === undefined) postSubject = "";
+//     if (datePosted === undefined) datePosted = "";
+
+//     //HTML Ref
+//     const postDivCreate = document.createElement("div");
+//     postDivCreate.classList.add("post");
+//     const postSubjectCreate = document.createElement("h2");
+//     const postContentCreate = document.createElement("p");
+//     const postedByCreate = document.createElement("p");
+//     const postedDateCreate = document.createElement("span");
+
+//     postContents.push(post);
+
+//     postSubjectCreate.innerHTML = postSubject;
+//     postContentCreate.innerHTML = postContentValue;
+//     postedByCreate.innerHTML = postedBy;
+//     postedDateCreate.innerHTML = datePosted;
+
+//     if (datePosted !== "") {
+//       let postTime = Math.floor((new Date() - datePosted) / 1000);
+
+//       if (postTime < 60)
+//         postedDateCreate.textContent = postTime + " seconds ago";
+
+//       if (postTime >= 60 && postTime < 120) {
+//         postedDateCreate.textContent = Math.trunc(postTime / 60) + "minute ago";
+//       } else if (postTime >= 120) {
+//         postedDateCreate.textContent =
+//           Math.trunc(postTime / 60) + "minutes ago";
+//       }
+
+//       if (postTime >= 3600 && postTime < 7200) {
+//         postedDateCreate.textContent = Math.trunc(postTime / 3600) + "hour ago";
+//       } else if (postTime >= 7200)
+//         postedDateCreate.textContent =
+//           Math.trunc(postTime / 3600) + "hours ago";
+
+//       if (postTime >= 86400 && postTime < 172800)
+//         postedDateCreate.textContent = Math.trunc(postTime / 86400) + "day ago";
+//       else if (postTime >= 172800)
+//         postedDateCreate.textContent =
+//           Math.trunc(postTime / 86400) + "days ago";
+
+//       if (postTime >= 604800 && postTime < 691200)
+//         postedDateCreate.textContent =
+//           Math.trunc(postTime / 604800) + "week ago";
+//       else if (postTime >= 691200) {
+//         let postedDate = new Date(datePosted);
+//         let dateString = postedDate.toLocaleDateString();
+//         postedDateCreate.textContent = "Posted on " + dateString;
+//       }
+//     }
+
+//     if (document.querySelector(".post")) {
+//       const firstChild = document.querySelector(".post");
+//       allPosts.insertBefore(postDivCreate, firstChild);
+//     } else allPosts.appendChild(postDivCreate);
+
+//     postDivCreate.appendChild(postSubjectCreate);
+//     postDivCreate.appendChild(postContentCreate);
+//     postDivCreate.appendChild(postedByCreate);
+//     postDivCreate.appendChild(postedDateCreate);
+//   });
+// });
 
 //collapsible navbar
 const navIcon = document.querySelector(".hamburgur-icon");
