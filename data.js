@@ -26,9 +26,9 @@ function checkAuthState() {
     if (load) {
       if (user) {
         //When deployed to github
-        // window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
+        window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
 
-        window.location.href = "/dashboard.html";
+        //window.location.href = "/dashboard.html";
       }
       load = false;
     }
@@ -153,8 +153,8 @@ function login() {
         // Retrieve User data
         get(databaseRef).then((user_data) => {
           //When deployed to github
-          // window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
-          window.location.href = "/dashboard.html";
+          window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
+          //window.location.href = "/dashboard.html";
         });
         // Update last login time
         update(databaseRef, { last_login: Date.now() });
