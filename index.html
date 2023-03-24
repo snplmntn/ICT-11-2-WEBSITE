@@ -5,18 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dos - Login and Signup</title>
-    <link rel="stylesheet" href="index.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Electrolize&family=Rubik+Mono+One&family=Saira+Condensed:wght@300&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="icon" href="img/logo.png" />
   </head>
 
   <body>
@@ -25,17 +25,18 @@
         <div class="desc-containers">
           <h1>ICT 11-2</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem odio
-            distinctio optio. Dolores hic dignissimos, in quo quibusdam sequi
-            provident aut obcaecati, id soluta error illo, facilis eligendi
-            veritatis veniam ut? Laudantium similique aut earum iste, sit, ipsa
-            quos sunt sint laborum fugiat tempora voluptate temporibus
-            reprehenderit eligendi ab quibusdam in commodi impedit laboriosam.
-            Maxime delectus vel ipsum impedit nobis dolorem, aliquid, rerum fuga
-            inventore sit soluta cum, officia ad reprehenderit excepturi ipsa
-            illo placeat. Magnam repellat fugiat porro numquam distinctio
-            officiis quae architecto? Sed maxime unde odit fuga id veniam
-            quaerat alias a ab aut, commodi, molestiae quis voluptate?
+            Dos is a dynamic and engaging website created specifically for
+            students in the ICT 11-2 section. This platform offers a space for
+            students to share their thoughts, feelings, and rants anonymously or
+            publicly, and connect with their peers in a safe and moderated
+            environment. With a user-friendly interface, Dos makes it easy to
+            share and engage with content, whether it's a personal reflection, a
+            humorous anecdote, or a message of encouragement for the whole
+            class. One of the standout features of Dos is the ability to post
+            announcements for the entire class, making it a valuable tool to
+            remind everyone. Dos prioritizes the privacy and security of its
+            users, providing a secure and monitored environment for students to
+            connect and interact.
           </p>
         </div>
       </div>
@@ -68,10 +69,19 @@
                   id="signup-confirm-password"
                   placeholder="Confirm Password"
                 />
-
                 <i class="fa fa-eye-slash fa-eye-slashS show"></i>
                 <i class="fa fa-eye fa-eyeS hidden"></i>
               </label>
+              <div class="tac">
+                <input type="checkbox" id="terms-and-conditions-checkbox" /> I
+                agree to the
+                <a
+                  id="terms-and-conditions-link"
+                  href="terms-&-condition.html"
+                  target="_blank"
+                  >terms and condition.</a
+                >
+              </div>
 
               <button type="button" id="signup-button">Sign up</button>
               <div id="signup-error" class="error"></div>
@@ -104,7 +114,7 @@
                 <i class="fa fa-eye fa-eyeL hidden"></i>
               </label>
 
-              <!-- <input type="checkbox" id="toggle-password-login">Show Password -->
+              <!-- <input type="checkbox" id="toggle-password-login" />Show Password -->
               <button type="button" id="login-button">Login</button>
               <div id="login-error" class="error"></div>
             </div>

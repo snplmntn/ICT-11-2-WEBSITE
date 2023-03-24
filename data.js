@@ -25,10 +25,7 @@ function checkAuthState() {
   auth.onAuthStateChanged(function (user) {
     if (load) {
       if (user) {
-        //When deployed to github
-        // window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
-
-        window.location.href = "dashboard.html";
+        window.location.href = "main.html";
       }
       load = false;
     }
@@ -70,6 +67,9 @@ function signup() {
   const confirmPassword = document.getElementById(
     "signup-confirm-password"
   ).value;
+  const termsCondition = document.querySelector(
+    "#terms-and-conditions-checkbox"
+  );
 
   // Validate input fields
   if (email === "" || name === "" || password === "") {
@@ -91,22 +91,27 @@ function signup() {
     return;
   }
 
+  if (!termsCondition.checked) {
+    sError.textContent =
+      "You must agree to the terms and conditions to continue..";
+    return;
+  }
+
   createUserWithEmailAndPassword(auth, email, password)
     .then(function (userCredential) {
       // Sign up successful
 
       // Declare user variable
-      var user = auth.currentUser;
-      console.log(user);
+      const user = auth.currentUser;
       // Get a reference to the "users" node with the user's UID as the child node
-      var databaseRef = ref(database, "users/" + user.uid);
+      const databaseRef = ref(database, "users/" + user.uid);
 
       // Create User data
-      var user_data = {
+      const user_data = {
         email: email,
         name: name,
         password: password,
-        last_login: Date.now(),
+        dateCreated: Date.now(),
       };
 
       // Push to Firebase Database
@@ -120,10 +125,9 @@ function signup() {
     })
     .catch(function (error) {
       // Sign up failed
-      var errorCode = error.code;
-      var errorMessage = error.message;
+      const errorCode = error.code;
+      const errorMessage = error.message;
       console.error("Error signing up:", errorMessage);
-      console.log(errorCode);
       sError.textContent = errorMessage;
       document.getElementById("signup-correct").innerHTML = "";
     });
@@ -131,8 +135,8 @@ function signup() {
 
 // Login function
 function login() {
-  var email = document.getElementById("login-email").value;
-  var password = document.getElementById("login-password").value;
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
 
   if (email === "" || password === "") {
     lError.textContent = "Please fill up all the needed information.";
@@ -146,15 +150,13 @@ function login() {
   signInWithEmailAndPassword(auth, email, password)
     .then(function (userCredential) {
       // Login successful
-      var user = auth.currentUser;
+      const user = auth.currentUser;
       if (user) {
         // Add this user to Firebase Database
-        var databaseRef = ref(database, "users/" + user.uid);
+        const databaseRef = ref(database, "users/" + user.uid);
         // Retrieve User data
         get(databaseRef).then((user_data) => {
-          //When deployed to github
-          // window.location.href = "/ICT-11-2-WEBSITE/dashboard.html";
-          window.location.href = "dashboard.html";
+          window.location.href = "main.html";
         });
         // Update last login time
         update(databaseRef, { last_login: Date.now() });
@@ -162,8 +164,8 @@ function login() {
     })
     .catch(function (error) {
       // Handle errors
-      var errorCode = error.code;
-      var errorMessage = error.message;
+      const errorCode = error.code;
+      const errorMessage = error.message;
       console.error(errorCode);
       document.getElementById("login-error").innerHTML = errorMessage;
     });

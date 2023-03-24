@@ -65,6 +65,10 @@ body {
   height: 100%;
 }
 
+#terms-and-conditions-link:visited {
+  color: #333;
+}
+
 .container-signup > form,
 .container-login > form {
   text-align: center;
@@ -161,6 +165,20 @@ p {
   font-size: 1.3rem;
 }
 
+.fa {
+  font-size: 1rem;
+  position: absolute;
+  top: 30%;
+  right: 25px;
+}
+
+.signup-form .fa {
+  font-size: 1rem;
+  position: absolute;
+  top: 30%;
+  right: 25px;
+}
+
 @media (max-width: 1050px) {
   .container-signup > form,
   .container-login > form {
@@ -185,7 +203,7 @@ p {
   .container-all {
     min-height: 100vh;
     padding: 1rem;
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 
   .contents {
