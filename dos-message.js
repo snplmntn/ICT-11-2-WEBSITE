@@ -16,6 +16,7 @@ import {
   get,
   push,
   onValue,
+  remove,
 } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -31,6 +32,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
 
+//Send Message
 const sendMessage = document.querySelector("#send-button");
 const correctMessage = document.querySelector("#message-correct");
 const errorMessage = document.querySelector("#message-error");
@@ -44,26 +46,23 @@ sendMessage.addEventListener("click", function () {
   //Checks if all field are filled
   if (inputUID === "") {
     errorMessage.textContent = "UID not filled";
-    console.log("uid");
     return;
   }
 
   if (inputTitle === "") {
     errorMessage.textContent = "TItle not filled";
-    console.log("TItle");
     return;
   }
 
   if (inputContent === "") {
     errorMessage.textContent = "Content not filled";
-    console.log("Content");
     return;
   }
 
   //Sends the message
   if (inputUID && inputTitle && inputContent) {
     //Database Reference
-    const postMessageRefs = ref(database, `dos-message/"${inputUID}`);
+    const postMessageRefs = ref(database, `dos-message/${inputUID}`);
 
     //Message
     const message = {
@@ -76,6 +75,83 @@ sendMessage.addEventListener("click", function () {
     correctMessage.textContent = "Message sent.";
   } else {
     // An error occured
-    errorMessage.textContent = "Error Messaging";
+    errorMessage.textContent = "UID not Found";
   }
 });
+
+//Delete Message
+const deleteMessage = document.querySelector("#delete-button");
+const correctMessageD = document.querySelector("#d-message-correct");
+const errorMessageD = document.querySelector("#d-message-error");
+
+deleteMessage.addEventListener("click", function () {
+  //Inputs
+  const inputUID = document.querySelector("#d-input-uid").value;
+  const inputTitle = document.querySelector("#d-input-title");
+  const inputContent = document.querySelector("#d-input-content");
+
+  //Resets Message
+  correctMessageD.textContent = "";
+  errorMessageD.textContent = "";
+
+  //Checks if all field are filled
+  if (inputUID === "") {
+    errorMessageD.textContent = "UID not filled";
+    return;
+  }
+
+  //Sends the message
+  if (inputUID) {
+    //Database Reference
+    const postMessageRefs = ref(database, `dos-message/${inputUID}`);
+
+    //Message
+    get(postMessageRefs)
+      .then((message) => {
+        if (message.exists()) {
+          if (message.val() !== null) {
+            const { messageTitle, messageContent } = message.val();
+            if (messageTitle && messageContent) {
+              inputTitle.textContent = `Title: ${messageTitle}`;
+              inputContent.textContent = `Content: ${messageContent}`;
+
+              set(postMessageRefs, null)
+                .then(() => {
+                  correctMessageD.textContent = "Data removed successfully.";
+                })
+                .catch((error) => {
+                  (errorMessageD.textContent = "Error removing data:"), error;
+                });
+            }
+          } else {
+            errorMessageD.textContent = "Message Not Found";
+            return;
+          }
+        } else {
+          errorMessageD.textContent = "Message Not Found";
+        }
+      })
+      .catch((error) => {
+        errorMessageD.textContent = error.message;
+        return;
+      });
+  } else {
+    // An error occured
+    errorMessageD.textContent = "UID not Found";
+  }
+});
+
+const toDeleteButton = document.querySelector(".delete-message-button");
+const toSendButton = document.querySelector(".send-message-button");
+
+function toggleMessage() {
+  const deleteMessage = document
+    .querySelector(".container-login")
+    .classList.toggle("hidden");
+  const sendMessage = document
+    .querySelector(".container-signup")
+    .classList.toggle("hidden");
+}
+
+toDeleteButton.addEventListener("click", toggleMessage);
+toSendButton.addEventListener("click", toggleMessage);

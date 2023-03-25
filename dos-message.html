@@ -25,24 +25,26 @@
         <div class="desc-containers">
           <h1>SEND MESSAGE</h1>
           <p>
-            Dos is a dynamic and engaging website created specifically for
-            students in the ICT 11-2 section. This platform offers a space for
-            students to share their thoughts, feelings, and rants anonymously or
-            publicly, and connect with their peers in a safe and moderated
-            environment. With a user-friendly interface, Dos makes it easy to
-            share and engage with content, whether it's a personal reflection, a
-            humorous anecdote, or a message of encouragement for the whole
-            class. One of the standout features of Dos is the ability to post
-            announcements for the entire class, making it a valuable tool to
-            remind everyone. Dos prioritizes the privacy and security of its
-            users, providing a secure and monitored environment for students to
-            connect and interact.
+            Send Message is a powerful tool that allows administrators to
+            communicate directly with users on the platform. This feature
+            provides a private and secure way for administrators to send
+            important announcements, updates, and notifications to users. With
+            Send Message, administrators can send targeted messages to specific
+            individuals or groups, ensuring that the right information is
+            delivered to the right people. Messages are fully encrypted for
+            privacy, providing users with peace of mind knowing that their
+            personal information is safe and secure. This feature streamlines
+            communication between administrators and users, ensuring that
+            important messages are delivered promptly and efficiently. Although
+            users cannot respond to messages at this time, the Send Message
+            feature provides administrators with a valuable tool for sharing
+            information and keeping users informed.
           </p>
         </div>
       </div>
 
       <div class="login-signin-container">
-        <div class="container-signup">
+        <div class="container-signup hidden">
           <!-- Signup Form -->
           <form class="signup-form">
             <div class="form-container">
@@ -63,6 +65,32 @@
               <div id="message-error" class="error"></div>
               <div id="message-correct" class="correct"></div>
             </div>
+            <span class="delete-message-button button">Delete Message</span>
+          </form>
+        </div>
+
+        <div class="container-login">
+          <!-- Login Form -->
+          <form class="login-form">
+            <div class="form-container">
+              <h2>Delete Message to user</h2>
+              <label>
+                <input type="text" id="d-input-uid" placeholder="UID" />
+              </label>
+
+              <label>
+                <p id="d-input-title"></p>
+              </label>
+
+              <label>
+                <p id="d-input-content"></p>
+              </label>
+
+              <button type="button" id="delete-button">DELETE</button>
+              <div id="d-message-error" class="error"></div>
+              <div id="d-message-correct" class="correct"></div>
+            </div>
+            <span class="send-message-button button">Send Message</span>
           </form>
         </div>
       </div>

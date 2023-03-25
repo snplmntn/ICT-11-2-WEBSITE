@@ -466,19 +466,8 @@ mobileMyPosts.addEventListener("click", function () {
 
 async function userMessage() {
   const userUID = localStorage.getItem("userUID");
-  const messageRefs = ref(database, `dos-message/"${userUID}`);
+  const messageRefs = ref(database, `dos-message/${userUID}`);
   const messageParent = document.querySelector("#abt-user");
-
-  // For sending message
-  // const postMessageRefs = ref(database, `dos-message/"${userUID}`);
-
-  // const message = {
-  //   messageTitle: "MESSAGE TITLE",
-  //   messageContent: "MESSAGE CONTENT",
-  // };
-  // set(postMessageRefs, message);
-  // console.log("Message Sent to the user.");
-
   try {
     const message = await get(messageRefs);
 

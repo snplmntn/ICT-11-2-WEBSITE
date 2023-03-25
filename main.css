@@ -49,6 +49,11 @@ nav {
   color: #f3fdf5;
 }
 
+.nav-links {
+  display: flex;
+  flex-direction: row;
+}
+
 .post-anc a {
   color: black;
 }
@@ -167,9 +172,9 @@ button {
   font-size: 1.2rem;
   padding: 0 0.2rem;
   width: 3.8rem;
-  background-color: transparent;
+  background-color: #57cc99;
   border-radius: 0.5rem;
-  border: 1px solid rgba(0, 0, 0, 0);
+  border: 1px solid #327757;
   transition: all 200ms;
 }
 
@@ -180,12 +185,21 @@ button:hover {
   cursor: pointer;
 }
 
+.logout-link,
+#logout-button {
+  color: #ffffff;
+}
+
 .create-post,
 #add-announcement {
   background-color: #f3fdf5;
   margin-bottom: 1rem;
   width: 100%;
   min-height: 4rem;
+}
+
+.my-posts {
+  text-align: center;
 }
 
 .create-post:hover,
@@ -453,7 +467,8 @@ label textarea {
     top: 4rem;
     left: 0;
     z-index: 1000;
-    padding-bottom: 0.5rem;
+    padding: 1rem;
+    gap: 1rem;
   }
 
   .create-post,

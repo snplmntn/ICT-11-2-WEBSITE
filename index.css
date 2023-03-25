@@ -129,13 +129,14 @@ button {
 
 #login-button,
 #signup-button,
-#send-button {
+#send-button,
+#delete-button {
   background-color: #f3f3f3;
   color: #52b788;
   cursor: pointer;
   font-size: 20px;
   font-weight: bold;
-  width: 10em;
+  width: 5em;
   height: 2.5rem;
   border-radius: 20px;
 }
