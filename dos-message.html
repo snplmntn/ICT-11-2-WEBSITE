@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dos - Send Message</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Electrolize&family=Rubik+Mono+One&family=Saira+Condensed:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="icon" href="img/logo.png" />
+  </head>
+
+  <body>
+    <div class="container-all">
+      <div class="contents">
+        <div class="desc-containers">
+          <h1>SEND MESSAGE</h1>
+          <p>
+            Dos is a dynamic and engaging website created specifically for
+            students in the ICT 11-2 section. This platform offers a space for
+            students to share their thoughts, feelings, and rants anonymously or
+            publicly, and connect with their peers in a safe and moderated
+            environment. With a user-friendly interface, Dos makes it easy to
+            share and engage with content, whether it's a personal reflection, a
+            humorous anecdote, or a message of encouragement for the whole
+            class. One of the standout features of Dos is the ability to post
+            announcements for the entire class, making it a valuable tool to
+            remind everyone. Dos prioritizes the privacy and security of its
+            users, providing a secure and monitored environment for students to
+            connect and interact.
+          </p>
+        </div>
+      </div>
+
+      <div class="login-signin-container">
+        <div class="container-signup">
+          <!-- Signup Form -->
+          <form class="signup-form">
+            <div class="form-container">
+              <h2>Send Message to user</h2>
+              <label>
+                <input type="text" id="input-uid" placeholder="UID" />
+              </label>
+
+              <label>
+                <input type="text" id="input-title" placeholder="Title" />
+              </label>
+
+              <label>
+                <input type="text" id="input-content" placeholder="Content" />
+              </label>
+
+              <button type="button" id="send-button">SEND</button>
+              <div id="message-error" class="error"></div>
+              <div id="message-correct" class="correct"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="dos-message.js"></script>
+  </body>
+</html>

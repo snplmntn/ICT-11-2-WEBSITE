@@ -128,7 +128,8 @@ button {
 }
 
 #login-button,
-#signup-button {
+#signup-button,
+#send-button {
   background-color: #f3f3f3;
   color: #52b788;
   cursor: pointer;
