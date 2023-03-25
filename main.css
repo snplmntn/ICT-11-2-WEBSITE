@@ -202,6 +202,10 @@ button:hover {
   text-align: center;
 }
 
+.my-posts:hover {
+  cursor: pointer;
+}
+
 .create-post:hover,
 #add-announcement:hover {
   background-color: #eaf3eb;

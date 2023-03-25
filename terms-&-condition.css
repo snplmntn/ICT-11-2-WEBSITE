@@ -111,6 +111,14 @@ section {
   display: flex;
 }
 
+.contact-link {
+  color: rgb(2, 133, 255);
+}
+
+.contact-link:visited {
+  color: rgb(2, 133, 255);
+}
+
 .hidden {
   display: none;
 }

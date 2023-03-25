@@ -65,8 +65,12 @@ body {
   height: 100%;
 }
 
+#terms-and-conditions-link {
+  color: #000000;
+}
+
 #terms-and-conditions-link:visited {
-  color: #333;
+  color: #000000;
 }
 
 .container-signup > form,
@@ -104,7 +108,7 @@ body {
 
 label {
   position: relative;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 }
 
 input[type="text"],
@@ -141,6 +145,11 @@ button {
   border-radius: 20px;
 }
 
+#signup-button {
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
 button:active {
   color: #09c86d;
   transform: scale(0.95);
@@ -174,11 +183,19 @@ p {
   right: 25px;
 }
 
+.signup-form {
+  min-height: 32rem;
+}
+
 .signup-form .fa {
   font-size: 1rem;
   position: absolute;
   top: 30%;
   right: 25px;
+}
+
+.tac p {
+  font-size: 15px;
 }
 
 @media (max-width: 1050px) {
@@ -198,6 +215,9 @@ p {
 
   .desc-containers h1 {
     font-size: 350%;
+  }
+  .signup-form {
+    min-height: 25rem;
   }
 }
 
@@ -225,15 +245,35 @@ p {
 }
 
 @media (max-width: 350px) {
+  .container-all {
+    gap: 5rem;
+  }
+
   .container-signup > form,
   .container-login > form {
     width: 15rem;
     height: 25rem;
   }
 
+  .desc-containers p {
+    font-size: 0.95rem;
+  }
+
   .desc-containers {
     display: block;
     min-height: 60vh;
     width: 15rem;
+  }
+
+  .error {
+    color: red;
+    margin-top: 5px;
+    font-size: 10px;
+  }
+
+  .signup-form,
+  .login-form {
+    min-width: 110%;
+    min-height: 28rem;
   }
 }

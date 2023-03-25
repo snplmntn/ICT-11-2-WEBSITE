@@ -14,11 +14,11 @@
       property="og:url"
       content="https://snplmntn.github.io/ICT-11-2-WEBSITE/main.html"
     />
+    <title>Dos</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <title>Dos</title>
     <link rel="stylesheet" href="main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -70,13 +70,20 @@
             <button class="create-post">Create New Post</button>
           </div>
 
-          <a href="terms-&-condition.html">Terms & Conditions</a>
+          <a href="terms-&-condition.html">Terms & Conditions.</a>
         </div>
       </div>
       <main id="main">
         <section class="dos-landing-page" id="dos">
           <h2 id="newsfeed">Newsfeed</h2>
           <!-- appended post goes here -->
+
+          <!-- <div class="post">
+            <h2>Title</h2>
+            <p>Content</p>
+            <p>Author</p>
+            <span>Date</span>
+          </div> -->
         </section>
       </main>
       <div class="announcement-wrapper aside-contents">
@@ -99,13 +106,23 @@
       <h2>Create new announcement</h2>
       <div class="add-announce-container">
         <label>
-          <input type="text" id="title" placeholder="Enter title..." />
+          <input
+            type="text"
+            id="title"
+            class="announce-input"
+            placeholder="Enter title..."
+          />
         </label>
 
         <label>
-          <input type="text" id="content" placeholder="Enter Content..." />
+          <input
+            type="text"
+            id="content"
+            class="announce-input"
+            placeholder="Enter Content..."
+          />
         </label>
-
+        <div id="announcement-error" class="error"></div>
         <button type="button" id="submit-btn">Submit</button>
       </div>
     </div>
@@ -118,7 +135,9 @@
           <label>
             <textarea
               name="post-subject"
+              type="text"
               id="post-subject"
+              class="post-input"
               placeholder="Enter subject..."
             ></textarea>
           </label>
@@ -126,7 +145,9 @@
           <label>
             <textarea
               name="post-content"
+              type="text"
               id="post-content"
+              class="post-input"
               placeholder="Enter text..."
             ></textarea>
           </label>

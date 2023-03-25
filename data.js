@@ -81,6 +81,7 @@ function signup() {
     sError.textContent = "Email must be valid.";
     return;
   }
+
   if (validate_password(password) == false) {
     sError.textContent = "Password must consist of atleast 6 characters.";
     return;
@@ -194,3 +195,27 @@ function validate_password(password) {
     return true;
   }
 }
+
+//Hot keys
+const loginInputForHotkey = document.querySelectorAll(".login-input");
+const signUpInputForHotkey = document.querySelectorAll(".signup-input");
+
+console.log(localStorage.getItem("signUp"));
+console.log(signUpInputForHotkey);
+signUpInputForHotkey.forEach((signUpInput) =>
+  signUpInput.addEventListener("keydown", (event) => {
+    if (localStorage.getItem("signUp") === "false")
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        signup();
+      }
+  })
+);
+
+loginInputForHotkey.forEach((loginInput) =>
+  loginInput.addEventListener("keydown", (event) => {
+    if (localStorage.getItem("logIn") === "false")
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        login();
+      }
+  })
+);

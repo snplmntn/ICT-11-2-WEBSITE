@@ -117,11 +117,16 @@ announce.addEventListener("click", function () {
 //add new announcement
 const submitAnnounce = document.querySelector("#submit-btn");
 const announceContainer = document.querySelector("#new-announcements");
+const announceError = document.querySelector("#announcement-error");
 
-submitAnnounce.addEventListener("click", function () {
+function announceFunction() {
   const titleValue = document.querySelector("#title");
   const contentValue = document.querySelector("#content");
 
+  if (titleValue.value === "" || contentValue.value === "") {
+    announceError.textContent = "Title or Content is not filled.";
+    return;
+  }
   const announcement = {
     author: currentUser.val().name,
     title: titleValue.value,
@@ -135,7 +140,10 @@ submitAnnounce.addEventListener("click", function () {
   titleValue.value = "";
   contentValue.value = "";
   toggleModal();
-});
+  announceError.textContent = "";
+}
+
+submitAnnounce.addEventListener("click", announceFunction);
 
 const announcementsRef = ref(database, "announcements");
 let announcementTitles = [];
@@ -155,28 +163,28 @@ onValue(announcementsRef, (snapshot) => {
         break;
       }
 
-      // // Store the last announcement in localStorage
-      // var lastAnnouncement = localStorage.getItem("lastAnnouncement");
+      // Store the last announcement in localStorage
+      const lastAnnouncement = localStorage.getItem("lastAnnouncement");
 
-      // // Check if the new announcement is different from the last announcement
-      // if (lastAnnouncement !== titleValue + contentValue) {
-      //   // Update the last announcement in localStorage
-      //   localStorage.setItem("lastAnnouncement", titleValue + contentValue);
+      // Check if the new announcement is different from the last announcement
+      if (lastAnnouncement !== titleValue + contentValue) {
+        // Update the last announcement in localStorage
+        localStorage.setItem("lastAnnouncement", titleValue + contentValue);
 
-      //   // Check if the browser supports the Notification API
-      //   if ("Notification" in window) {
-      //     // Request permission to show notifications
-      //     Notification.requestPermission().then(function (result) {
-      //       // Send the notification
-      //       var notification = new Notification(
-      //         `New Announcement: ${titleValue}`,
-      //         {
-      //           body: `${contentValue}`,
-      //         }
-      //       );
-      //     });
-      //   }
-      // }
+        // Check if the browser supports the Notification API
+        if ("Notification" in window) {
+          // Request permission to show notifications
+          Notification.requestPermission().then(function (result) {
+            // Send the notification
+            const notification = new Notification(
+              `New Announcement: ${titleValue}`,
+              {
+                body: `${contentValue}`,
+              }
+            );
+          });
+        }
+      }
     }
 
     if (!titleExists) {
@@ -273,7 +281,7 @@ const allPosts = document.querySelector("#dos");
 const checkBox = document.querySelector("#anonymous");
 const errorMessage = document.querySelector("#post-error");
 
-post.addEventListener("click", function () {
+function postFunction() {
   if (subject.value === "" || content.value === "") {
     errorMessage.textContent = "Subject or Content is not filled.";
     return;
@@ -299,7 +307,9 @@ post.addEventListener("click", function () {
   content.value = "";
   checkBox.checked = false;
   errorMessage.textContent = "";
-});
+}
+
+post.addEventListener("click", postFunction);
 
 const postRefs = ref(database, "posts/");
 
@@ -493,3 +503,23 @@ async function userMessage() {
 }
 
 userMessage();
+
+//Hot Keys
+const announceInputForHotkey = document.querySelectorAll(".announce-input");
+const postInputForHotkey = document.querySelectorAll(".post-input");
+
+announceInputForHotkey.forEach((announceInput) =>
+  announceInput.addEventListener("keydown", (event) => {
+    if (event.code === "Enter" || event.code === "NumpadEnter") {
+      announceFunction();
+    }
+  })
+);
+
+postInputForHotkey.forEach((postInput) =>
+  postInput.addEventListener("keydown", (event) => {
+    if (event.code === "Enter" || event.code === "NumpadEnter") {
+      postFunction();
+    }
+  })
+);

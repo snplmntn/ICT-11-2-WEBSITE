@@ -2,7 +2,10 @@ const to_signup_button = document.querySelector(".to-signup-button");
 const to_login_button = document.querySelector(".to-login-button");
 const signupContainer = document.querySelector(".container-signup");
 const loginContainer = document.querySelector(".container-login");
-
+const signUpMessage = document.querySelector(".signup-message");
+const loginMessage = document.querySelector(".login-message");
+console.log(signUpMessage);
+console.log(loginMessage);
 if (localStorage.getItem("signUp") === "false") {
   signupContainer.classList.remove("hidden");
 }
@@ -14,6 +17,15 @@ if (localStorage.getItem("logIn") === "true") {
 const login_signup = function () {
   signupContainer.classList.toggle("hidden");
   loginContainer.classList.toggle("hidden");
+
+  if (signupContainer.classList.contains("hidden")) {
+    signUpMessage.classList.add("hidden");
+    loginMessage.classList.remove("hidden");
+  } else {
+    signUpMessage.classList.remove("hidden");
+    loginMessage.classList.add("hidden");
+  }
+
   localStorage.setItem("signUp", signupContainer.classList.contains("hidden"));
   localStorage.setItem("logIn", loginContainer.classList.contains("hidden"));
 };

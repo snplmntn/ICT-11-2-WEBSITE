@@ -34,19 +34,30 @@
       <div class="contents">
         <div class="desc-containers">
           <h1>ICT 11-2</h1>
-          <p>
-            Dos is a dynamic and engaging website created specifically for
-            students in the ICT 11-2 section. This platform offers a space for
-            students to share their thoughts, feelings, and rants anonymously or
-            publicly, and connect with their peers in a safe and moderated
-            environment. With a user-friendly interface, Dos makes it easy to
-            share and engage with content, whether it's a personal reflection, a
-            humorous anecdote, or a message of encouragement for the whole
-            class. One of the standout features of Dos is the ability to post
-            announcements for the entire class, making it a valuable tool to
-            remind everyone. Dos prioritizes the privacy and security of its
-            users, providing a secure and monitored environment for students to
-            connect and interact.
+          <p class="signup-message hidden">
+            New to Dos? Dos is a dynamic and engaging platform designed
+            specifically for students in the ICT 11-2 section! With a
+            user-friendly interface and a safe, moderated environment, Dos is
+            the perfect space to share your thoughts and connect with your
+            peers. Whether you want to post anonymously or publicly, Dos offers
+            a variety of ways to share your personal reflections, funny
+            anecdotes, or motivational messages with the entire class. With the
+            ability to post announcements for the whole group, Dos is also a
+            valuable tool to help keep everyone in the loop. So why not join us
+            on Dos today and start sharing your voice with the world? Sign up
+            Now!
+          </p>
+
+          <p class="login-message">
+            Welcome to Dos, the dynamic and engaging platform designed
+            specifically for students in the ICT 11-2 section! With a
+            user-friendly interface and a safe, moderated environment, Dos is
+            the perfect space to share your thoughts and connect with your
+            peers. Whether you want to post anonymously or publicly, Dos offers
+            a variety of ways to share your personal reflections, funny
+            anecdotes, or motivational messages with the entire class. With the
+            ability to post announcements for the whole group, Dos is also a
+            valuable tool to help keep everyone in the loop.
           </p>
         </div>
       </div>
@@ -58,17 +69,28 @@
             <div class="form-container">
               <h2>Sign up</h2>
               <label>
-                <input type="text" id="signup-name" placeholder="Name" />
+                <input
+                  type="text"
+                  id="signup-name"
+                  class="signup-input"
+                  placeholder="Name"
+                />
               </label>
 
               <label>
-                <input type="text" id="signup-email" placeholder="Email" />
+                <input
+                  type="text"
+                  id="signup-email"
+                  class="signup-input"
+                  placeholder="Email"
+                />
               </label>
 
               <label>
                 <input
                   type="password"
                   id="signup-password"
+                  class="signup-input"
                   placeholder="Password"
                 />
               </label>
@@ -77,30 +99,35 @@
                 <input
                   type="password"
                   id="signup-confirm-password"
+                  class="signup-input"
                   placeholder="Confirm Password"
                 />
                 <i class="fa fa-eye-slash fa-eye-slashS show"></i>
                 <i class="fa fa-eye fa-eyeS hidden"></i>
               </label>
+
               <div class="tac">
-                <input type="checkbox" id="terms-and-conditions-checkbox" /> I
-                agree to the
-                <a
-                  id="terms-and-conditions-link"
-                  href="terms-&-condition.html"
-                  target="_blank"
-                  >terms and condition.</a
-                >
+                <p>
+                  <input type="checkbox" id="terms-and-conditions-checkbox" /> I
+                  agree to the
+                  <a
+                    id="terms-and-conditions-link"
+                    class="signup-input"
+                    href="terms-&-condition.html"
+                    target="_blank"
+                    >terms and condition.</a
+                  >
+                </p>
               </div>
 
               <button type="button" id="signup-button">Sign up</button>
-              <div id="signup-error" class="error"></div>
-              <div id="signup-correct" class="correct"></div>
             </div>
-            <label
-              >Already have an account?
+            <label>
+              Already have an account?
               <span class="to-login-button button">Login Here.</span>
             </label>
+            <div id="signup-error" class="error"></div>
+            <div id="signup-correct" class="correct"></div>
           </form>
         </div>
 
@@ -111,13 +138,19 @@
               <h2>Login</h2>
 
               <label>
-                <input type="text" id="login-email" placeholder="Email" />
+                <input
+                  type="text"
+                  id="login-email"
+                  class="login-input"
+                  placeholder="Email"
+                />
               </label>
 
               <label>
                 <input
                   type="password"
                   id="login-password"
+                  class="login-input"
                   placeholder="Password"
                 />
                 <i class="fa fa-eye-slash fa-eye-slashL show"></i>
