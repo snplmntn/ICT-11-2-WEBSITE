@@ -18,12 +18,6 @@ import {
   onValue,
 } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
 
-const title = "Dos";
-const photoUrl = "https://snplmntn.github.io/ICT-11-2-WEBSITE/img/logo.png";
-const shareUrl = `https://example.com/post?title=${encodeURIComponent(
-  title
-)}&photo=${encodeURIComponent(photoUrl)}`;
-
 const firebaseConfig = {
   apiKey: "AIzaSyBrtH6Qajw348Qzv4Urz9OSrrSmr6b84yM",
   authDomain: "dos-auth-26e96.firebaseapp.com",
