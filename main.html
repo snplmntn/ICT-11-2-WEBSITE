@@ -38,7 +38,7 @@
       <div class="nav-container">
         <div class="nav-links" id="nav-desktop">
           <a class="home" href="#home">Home</a>
-          <p class="my-posts">My Posts</p>
+          <a class="my-posts" href="#my-posts">My Posts</a>
           <button class="logout-link">Logout</button>
         </div>
         <div class="hamburgur-icon">
@@ -49,8 +49,8 @@
       </div>
 
       <div class="nav-links collapsed-nav hidden" id="nav-mobile">
-        <p id="nf" class="home">Home</p>
-        <p class="my-posts mobile-my-posts">My Posts</p>
+        <a id="nf" class="home" href="#home">Home</a>
+        <a class="my-posts mobile-my-posts" href="#my-posts">My Posts</a>
         <p id="nav-post">Create Post</p>
         <p id="nav-announce">Announcements</p>
         <button class="logout-link">Logout</button>
@@ -70,20 +70,18 @@
             <button class="create-post">Create New Post</button>
           </div>
 
-          <a href="terms-&-condition.html">Terms & Conditions.</a>
+          <div class="container" id="tac-fb">
+            <a href="terms-and-condition.html" target="_blank"
+              >Terms & Conditions.</a
+            >
+            <p id="feedback">Send feedback</p>
+          </div>
         </div>
       </div>
       <main id="main">
         <section class="dos-landing-page" id="dos">
           <h2 id="newsfeed">Newsfeed</h2>
           <!-- appended post goes here -->
-
-          <!-- <div class="post">
-            <h2>Title</h2>
-            <p>Content</p>
-            <p>Author</p>
-            <span>Date</span>
-          </div> -->
         </section>
       </main>
       <div class="announcement-wrapper aside-contents">
@@ -162,7 +160,103 @@
         </div>
       </div>
     </div>
-    <div class="overlay hidden"></div>
+    <div class="overlay"></div>
+
+    <div class="feedback-container hidden">
+      <input type="button" class="btn-close" value="&times;" />
+      <h2>Send Feedback</h2>
+      <div class="send-fb-container">
+      
+          <label>
+            <input
+              type="text"
+              id="fb-title"
+              class="fb-input"
+              placeholder="Subject"
+            />
+          </label>
+
+          <label>
+            <input
+              type="text"
+              id="fb-content"
+              class="fb-input"
+              placeholder="Enter Content..."
+            />
+          </label>
+        </p>
+
+        <div id="feedback-error" class="error"></div>
+        <a
+          href="feedbacks.html"
+          target="_blank"
+          class="hidden"
+          id="feedback-link"
+          >Feedbacks</a
+        >
+        <div id="announcement-error" class="error"></div>
+        <button type="button" id="fb-submit">Submit</button>
+      </div>
+    </div>
+
+    <div class="survey-container">
+      <input type="button" class="btn-close" value="&times;" />
+      <h2>Surbeytes</h2>
+      <div class="send-sv-container">
+
+        <p>Have you found it easy to navigate the Dos platform and find the features you need?</p>
+
+        <div class="radioboxes">
+          <input type="radio" id="yes1" name="no:1" value="1: Yes">
+          <label for="yes1">Yes</label>
+          <input type="radio" id="no1" name="no:1" value="1: No">
+          <label for="no1">No</label>
+      </div>
+
+        <p>
+          Do you feel that the privacy settings on Dos adequately protect your personal information?</p>
+
+        <div class="radioboxes">
+          <input type="radio" id="yes2" name="no:2" value="1: Yes">
+          <label for="yes2">Yes</label>
+          <input type="radio" id="no2" name="no:2" value="1: No">
+          <label for="no2">No</label>
+      </div>
+
+      <p>
+        Have you encountered any technical problems while using Dos, such as issues with posts and announcements not appearing properly or problems with the display of the platform?</p>
+
+      <div class="radioboxes">
+        <input type="radio" id="yes2" name="no:2" value="1: Yes">
+        <label for="yes2">Yes</label>
+        <input type="radio" id="no2" name="no:2" value="1: No">
+        <label for="no2">No</label>
+    </div>
+
+    <p>
+      Do you feel that the privacy settings on Dos adequately protect your personal information?</p>
+
+    <div class="radioboxes">
+      <input type="radio" id="yes2" name="no:2" value="1: Yes">
+      <label for="yes2">Yes</label>
+      <input type="radio" id="no2" name="no:2" value="1: No">
+      <label for="no2">No</label>
+  </div>
+
+  <p>
+    Do you feel that the privacy settings on Dos adequately protect your personal information?</p>
+
+  <div class="radioboxes">
+    <input type="radio" id="yes2" name="no:2" value="1: Yes">
+    <label for="yes2">Yes</label>
+    <input type="radio" id="no2" name="no:2" value="1: No">
+    <label for="no2">No</label>
+</div>
+        <div id="feedback-error" class="error"></div>
+        <div id="announcement-error" class="error"></div>
+        <button type="button" id="sv-submit">Submit</button>
+      </div>
+    </div>
 
     <footer>
       <div class="preloader">

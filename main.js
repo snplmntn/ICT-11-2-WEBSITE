@@ -16,6 +16,7 @@ import {
   get,
   push,
   onValue,
+  child,
 } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -30,19 +31,33 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
+// const rootRef = ref();
+
+//Overlay
+const overlay = document.querySelector(".overlay");
 
 let currentUser;
+let userStatus = "user";
+
 const name = document.querySelector("#user-name");
 function checkAuthState() {
   auth.onAuthStateChanged(function (user) {
     if (user) {
-      overlay.classList.add("hidden");
+      // overlay.classList.add("hidden");
       const databaseRef = ref(database, "users/" + user.uid);
       localStorage.setItem("userUID", user.uid);
 
       get(databaseRef).then((client) => {
         name.textContent = client.val().name;
         localStorage.setItem("userName", client.val().name);
+
+        if (
+          localStorage.getItem("userName") === "test" ||
+          localStorage.getItem("userName") === "Sean" ||
+          localStorage.getItem("userName") === "Morc"
+        )
+          userStatus = "Admin";
+
         currentUser = client;
       });
     } else {
@@ -55,15 +70,16 @@ const loader = document.querySelector(".preloader");
 
 window.addEventListener("load", function () {
   loader.classList.add("hidden");
-  overlay.classList.add("hidden");
   checkAuthState();
 });
+
+// window.addEventListener("beforeunload", function () {
+//   localStorage.removeItem("lastAnnouncement");
+// });
 
 const logOut = document.querySelector("#logout-button");
 const logOutLink = document.querySelectorAll(".logout-link");
 const exitBtn = document.querySelectorAll(".btn-close");
-const announce = document.querySelector("#add-announcement");
-const overlay = document.querySelector(".overlay");
 
 logOut.addEventListener("click", function () {
   // Calls the signOut() method to log out the user
@@ -86,13 +102,17 @@ function toggleModal() {
   document.querySelector(".logout-modal").classList.add("hidden");
   document.querySelector(".announce-container").classList.add("hidden");
   document.querySelector(".upload-post-container").classList.add("hidden");
+  document.querySelector(".feedback-container").classList.add("hidden");
+  document.querySelector(".survey-container").classList.add("hidden");
+  document.querySelector(".collapsed-nav").classList.add("hidden");
 }
 
 logOutLink.forEach(function (logout) {
   logout.addEventListener("click", function () {
     document.querySelector(".overlay").classList.remove("hidden");
+    document.querySelector(".overlay").style.zIndex = 1000;
     document.querySelector(".logout-modal").classList.remove("hidden");
-    document.querySelector(".overlay").classList.remove("hidden");
+    document.querySelector(".logout-modal").style.zIndex = 1001;
     mobileNav.classList.add("hidden");
   });
 });
@@ -101,23 +121,32 @@ exitBtn.forEach((btn) => {
   btn.addEventListener("click", toggleModal);
 });
 
+document.querySelector(".overlay").addEventListener("click", toggleModal);
+
 window.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     document.querySelector(".overlay").classList.add("hidden");
     document.querySelector(".logout-modal").classList.add("hidden");
     document.querySelector(".announce-container").classList.add("hidden");
+    document.querySelector(".feedback-container").classList.add("hidden");
   }
 });
 
+//Announcement
+const announce = document.querySelector("#add-announcement");
+const announceError = document.querySelector("#announcement-error");
+
 announce.addEventListener("click", function () {
+  announceError.textContent = "";
   document.querySelector(".announce-container").classList.remove("hidden");
+  document.querySelector(".announce-container").style.zIndex = 1001;
   document.querySelector(".overlay").classList.toggle("hidden");
+  document.querySelector(".overlay").style.zIndex = 1000;
 });
 
 //add new announcement
 const submitAnnounce = document.querySelector("#submit-btn");
 const announceContainer = document.querySelector("#new-announcements");
-const announceError = document.querySelector("#announcement-error");
 
 function announceFunction() {
   const titleValue = document.querySelector("#title");
@@ -145,10 +174,12 @@ function announceFunction() {
 
 submitAnnounce.addEventListener("click", announceFunction);
 
+//Anouncements
 const announcementsRef = ref(database, "announcements");
 let announcementTitles = [];
 
 onValue(announcementsRef, (snapshot) => {
+  announcementTitles = []; // clear the announcementTitles array
   snapshot.forEach((childSnapshot) => {
     const announcement = childSnapshot.val();
     const contentValue = announcement.content;
@@ -157,34 +188,8 @@ onValue(announcementsRef, (snapshot) => {
     const datePosted = announcement.announementDate;
 
     let titleExists = false;
-    for (let i = 0; i < announcementTitles.length; i++) {
-      if (announcementTitles[i] === titleValue) {
-        titleExists = true;
-        break;
-      }
-
-      // Store the last announcement in localStorage
-      const lastAnnouncement = localStorage.getItem("lastAnnouncement");
-
-      // Check if the new announcement is different from the last announcement
-      if (lastAnnouncement !== titleValue + contentValue) {
-        // Update the last announcement in localStorage
-        localStorage.setItem("lastAnnouncement", titleValue + contentValue);
-
-        // Check if the browser supports the Notification API
-        if ("Notification" in window) {
-          // Request permission to show notifications
-          Notification.requestPermission().then(function (result) {
-            // Send the notification
-            const notification = new Notification(
-              `New Announcement: ${titleValue}`,
-              {
-                body: `${contentValue}`,
-              }
-            );
-          });
-        }
-      }
+    if (announcementTitles.includes(titleValue)) {
+      return;
     }
 
     if (!titleExists) {
@@ -198,6 +203,11 @@ onValue(announcementsRef, (snapshot) => {
 
       if (datePosted !== "") {
         let postTime = Math.floor((new Date() - datePosted) / 1000);
+
+        // Prevent NaN time or -1
+        if (postTime < 0 || postTime === NaN) {
+          postTime = 1;
+        }
 
         if (postTime < 60)
           postedDateCreate.textContent = `${author}: ${postTime} seconds ago`;
@@ -262,10 +272,16 @@ onValue(announcementsRef, (snapshot) => {
 const createPostBtn = document.querySelector(".create-post");
 const subject = document.querySelector("#post-subject");
 const content = document.querySelector("#post-content");
+const errorMessage = document.querySelector("#post-error");
 
 createPostBtn.addEventListener("click", function () {
+  errorMessage.textContent = "";
+  subject.value = "";
+  content.value = "";
   document.querySelector(".overlay").classList.remove("hidden");
+  document.querySelector(".overlay").style.zIndex = 1000;
   document.querySelector(".upload-post-container").classList.remove("hidden");
+  document.querySelector(".upload-post-container").style.zIndex = 1001;
 });
 
 //designs for textarea
@@ -277,9 +293,7 @@ content.addEventListener("keyup", function (e) {
 
 //appending posts
 const post = document.querySelector("#post-btn");
-const allPosts = document.querySelector("#dos");
 const checkBox = document.querySelector("#anonymous");
-const errorMessage = document.querySelector("#post-error");
 
 function postFunction() {
   if (subject.value === "" || content.value === "") {
@@ -354,46 +368,43 @@ const loadPosts = function () {
 
       postSubjectCreate.innerHTML = postSubject;
       postContentCreate.innerHTML = postContentValue;
-      postedByCreate.innerHTML = postedBy;
-      postedDateCreate.innerHTML = datePosted;
 
+      postContentCreate.innerHTML = postContentValue.replace(
+        /(https?:\/\/[^\s]+)/g,
+        '<a href="$1">$1</a>'
+      );
+      postedByCreate.innerHTML = postedBy;
+
+      let timeString = "";
       if (datePosted !== "") {
         const postTime = Math.floor((new Date() - datePosted) / 1000);
 
-        let timeString = "";
-        switch (true) {
-          case postTime < 60:
-            timeString = postTime + " seconds ago";
-            break;
-          case postTime < 120:
-            timeString = Math.trunc(postTime / 60) + " minute ago";
-            break;
-          case postTime < 3600:
-            timeString = Math.trunc(postTime / 60) + " minutes ago";
-            break;
-          case postTime < 7200:
-            timeString = Math.trunc(postTime / 3600) + " hour ago";
-            break;
-          case postTime < 86400:
-            timeString = Math.trunc(postTime / 3600) + " hours ago";
-            break;
-          case postTime < 172800:
-            timeString = Math.trunc(postTime / 86400) + " day ago";
-            break;
-          case postTime < 604800:
-            timeString = Math.trunc(postTime / 86400) + " days ago";
-            break;
-          case postTime < 691200:
-            timeString = Math.trunc(postTime / 604800) + " week ago";
-            break;
-          default:
-            const postedDate = new Date(datePosted);
-            const dateString = postedDate.toLocaleDateString();
-            timeString = "Posted on " + dateString;
-            break;
+        if (postTime < 0 || postTime === NaN) {
+          postTime = 1;
+          timeString = postTime + " second ago";
+        } else if (postTime < 60) {
+          timeString = postTime + " seconds ago";
+        } else if (postTime < 120) {
+          timeString = Math.trunc(postTime / 60) + " minute ago";
+        } else if (postTime < 3600) {
+          timeString = Math.trunc(postTime / 60) + " minutes ago";
+        } else if (postTime < 7200) {
+          timeString = Math.trunc(postTime / 3600) + " hour ago";
+        } else if (postTime < 86400) {
+          timeString = Math.trunc(postTime / 3600) + " hours ago";
+        } else if (postTime < 172800) {
+          timeString = Math.trunc(postTime / 86400) + " day ago";
+        } else if (postTime < 604800) {
+          timeString = Math.trunc(postTime / 86400) + " days ago";
+        } else if (postTime < 691200) {
+          timeString = Math.trunc(postTime / 604800) + " week ago";
+        } else {
+          const postedDate = new Date(datePosted);
+          const dateString = postedDate.toLocaleDateString();
+          timeString = "Posted on " + dateString;
         }
-        postedDateCreate.textContent = timeString;
       }
+      postedDateCreate.textContent = timeString;
 
       if (document.querySelector(".post")) {
         const firstChild = document.querySelector(".post");
@@ -432,6 +443,7 @@ const mobileNav = document.getElementById("nav-mobile");
 navIcon.addEventListener("click", function () {
   mobileNav.classList.toggle("hidden");
   document.querySelector(".overlay").classList.toggle("hidden");
+  document.querySelector(".overlay").style.zIndex = 1;
 });
 
 // functions for post and announcement in nav
@@ -440,6 +452,7 @@ const navAnnounce = document.getElementById("nav-announce");
 const mobileNewsFeed = document.getElementById("nf");
 const mobileMyPosts = document.querySelector(".mobile-my-posts");
 const asideContents = document.querySelectorAll(".aside-contents");
+
 navPost.addEventListener("click", function () {
   document.querySelector("main").classList.add("hidden");
   document.querySelector(".information-wrapper").style.display = "flex";
@@ -504,9 +517,53 @@ async function userMessage() {
 
 userMessage();
 
+const feedback = document.querySelector("#feedback");
+const fbError = document.querySelector("#feedback-error");
+
+feedback.addEventListener("click", function () {
+  fbError.textContent = "";
+  if (userStatus === "Admin") {
+    document.querySelector("#feedback-link").classList.remove("hidden");
+  }
+
+  document.querySelector(".feedback-container").classList.toggle("hidden");
+  document.querySelector(".feedback-container").style.zIndex = 1001;
+  document.querySelector(".overlay").classList.remove("hidden");
+  document.querySelector(".overlay").style.zIndex = 1000;
+});
+
+//FEEDBACKS
+const submitFb = document.querySelector("#fb-submit");
+
+function submitFeedbackFunction() {
+  const fbTitle = document.querySelector("#fb-title");
+  const fbContent = document.querySelector("#fb-content");
+
+  if (fbTitle.value === "" || fbContent.value === "") {
+    fbError.textContent = "Feedback Title or Content is not filled.";
+    return;
+  }
+
+  const feedBack = {
+    author: currentUser.val().name,
+    title: fbTitle.value,
+    content: fbContent.value,
+    datePosted: Date.now(),
+  };
+
+  const feedbackRefs = ref(database, "feedbacks/" + Date.now());
+  set(feedbackRefs, feedBack);
+  alert(`Feedback sent! Thank you ${feedBack.author}!`);
+  toggleModal();
+  fbError.textContent = "";
+}
+
+submitFb.addEventListener("click", submitFeedbackFunction);
+
 //Hot Keys
 const announceInputForHotkey = document.querySelectorAll(".announce-input");
 const postInputForHotkey = document.querySelectorAll(".post-input");
+const feedbackInputForHotkey = document.querySelectorAll(".fb-input");
 
 announceInputForHotkey.forEach((announceInput) =>
   announceInput.addEventListener("keydown", (event) => {
@@ -523,3 +580,17 @@ postInputForHotkey.forEach((postInput) =>
     }
   })
 );
+
+feedbackInputForHotkey.forEach((fbInput) =>
+  fbInput.addEventListener("keydown", (event) => {
+    if (event.code === "Enter" || event.code === "NumpadEnter") {
+      submitFeedbackFunction();
+    }
+  })
+);
+
+const surveyTest = document.querySelector(".survey-container");
+
+surveyTest.addEventListener("click", function () {
+  toggleModal();
+});

@@ -6,8 +6,11 @@ const signUpMessage = document.querySelector(".signup-message");
 const loginMessage = document.querySelector(".login-message");
 console.log(signUpMessage);
 console.log(loginMessage);
+
 if (localStorage.getItem("signUp") === "false") {
   signupContainer.classList.remove("hidden");
+  signUpMessage.classList.remove("hidden");
+  loginMessage.classList.add("hidden");
 }
 
 if (localStorage.getItem("logIn") === "true") {

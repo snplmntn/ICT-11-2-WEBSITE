@@ -72,7 +72,12 @@ function signup() {
   );
 
   // Validate input fields
-  if (email === "" || name === "" || password === "") {
+  if (
+    email === "" ||
+    name === "" ||
+    password === "" ||
+    confirmPassword === ""
+  ) {
     sError.textContent = "Please fill up all the needed information.";
     return;
   }
