@@ -205,8 +205,6 @@ function validate_password(password) {
 const loginInputForHotkey = document.querySelectorAll(".login-input");
 const signUpInputForHotkey = document.querySelectorAll(".signup-input");
 
-console.log(localStorage.getItem("signUp"));
-console.log(signUpInputForHotkey);
 signUpInputForHotkey.forEach((signUpInput) =>
   signUpInput.addEventListener("keydown", (event) => {
     if (localStorage.getItem("signUp") === "false")

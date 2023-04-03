@@ -134,7 +134,8 @@ button {
 #login-button,
 #signup-button,
 #send-button,
-#delete-button {
+#delete-button,
+#change-name-button {
   background-color: #f3f3f3;
   color: #52b788;
   cursor: pointer;
@@ -148,6 +149,10 @@ button {
 #signup-button {
   margin: 0 auto;
   margin-top: 10px;
+}
+
+#change-name-button {
+  width: 7em;
 }
 
 button:active {

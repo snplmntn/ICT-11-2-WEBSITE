@@ -48,19 +48,6 @@ onValue(feedbackRefs, (snapshot) => {
     const feedBackAuthor = feedBack.author;
     const datePosted = feedBack.datePosted;
 
-    //HTML Ref
-    // const createFbDiv = document.createElement("div");
-    // createFbDiv.classList.add("user-feedbacks");
-    // const createFbTitle = document.createElement("h2");
-    // const createFbContent = document.createElement("p");
-    // const FbTitle = document.querySelector("#fb-title");
-    // const FbContent = document.querySelector("#fb-content");
-    // createFbTitle.innerHTML = FbTitle.value;
-    // createFbContent.innerHTML = FbContent.value;
-    // fbContainer.appendChild(createFbDiv);
-    // createFbDiv.appendChild(createFbTitle);
-    // createFbDiv.appendChild(createFbContent);
-
     const createFbDiv = document.createElement("div");
     createFbDiv.classList.add("user-feedbacks");
     const createFbTitle = document.createElement("h2");

@@ -17,6 +17,9 @@ import {
   push,
   onValue,
   child,
+  orderByChild,
+  query,
+  limitToFirst,
 } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -31,7 +34,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
-// const rootRef = ref();
 
 //Overlay
 const overlay = document.querySelector(".overlay");
@@ -46,17 +48,16 @@ function checkAuthState() {
       // overlay.classList.add("hidden");
       const databaseRef = ref(database, "users/" + user.uid);
       localStorage.setItem("userUID", user.uid);
+      if (
+        user.uid === "rdZtMxgvm7bjFEVeCCKoJ41loth2" ||
+        user.uid === "o1LjDmMZMAQViYOndIGgOOwwz6h1" ||
+        user.uid === "PjhIFNUKXLa0ru3L5W1xoRebWin1"
+      )
+        userStatus = "Admin";
 
       get(databaseRef).then((client) => {
         name.textContent = client.val().name;
         localStorage.setItem("userName", client.val().name);
-
-        if (
-          localStorage.getItem("userName") === "test" ||
-          localStorage.getItem("userName") === "Sean" ||
-          localStorage.getItem("userName") === "Morc"
-        )
-          userStatus = "Admin";
 
         currentUser = client;
       });
@@ -71,6 +72,10 @@ const loader = document.querySelector(".preloader");
 window.addEventListener("load", function () {
   loader.classList.add("hidden");
   checkAuthState();
+
+  if (localStorage.getItem("submitted") === "true" || userStatus === "Admin") {
+    toggleModal();
+  }
 });
 
 // window.addEventListener("beforeunload", function () {
@@ -199,6 +204,25 @@ onValue(announcementsRef, (snapshot) => {
       const contentCreate = document.createElement("p");
       const postedDateCreate = document.createElement("span");
 
+      contentCreate.innerHTML = contentValue.replace(
+        /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(shorturl\.at\/[^\s]+)/g,
+        function (match) {
+          if (match.startsWith("http")) {
+            return (
+              '<a target = "_blank" href="' + match + '">' + match + "</a>"
+            );
+          } else {
+            return (
+              '<a target = "_blank" href="http://' +
+              match +
+              '">' +
+              match +
+              "</a>"
+            );
+          }
+        }
+      );
+
       announcementTitles.push(titleValue);
 
       if (datePosted !== "") {
@@ -252,7 +276,6 @@ onValue(announcementsRef, (snapshot) => {
       }
 
       titleCreate.innerHTML = titleValue;
-      contentCreate.innerHTML = contentValue;
 
       if (document.querySelector(".announcement")) {
         const firstChild = announceContainer.firstChild;
@@ -326,6 +349,79 @@ function postFunction() {
 post.addEventListener("click", postFunction);
 
 const postRefs = ref(database, "posts/");
+// const originalQuery = query(postRefs, orderByChild("timestamp"));
+
+// let lastPost = null;
+// let isLoading = false;
+// let numPostsLoaded = 0;
+
+// const loadPosts = function () {
+//   // Only load more posts if we're not already loading and there are more to load
+//   if (!isLoading && (lastPost === null || numPostsLoaded > 0)) {
+//     isLoading = true;
+
+//     // Listen for changes in the database and update UI accordingly
+//     let postQuery = originalQuery;
+
+//     if (lastPost !== null) {
+//       postQuery = query(postRefs, orderByChild("timestamp")).startAt(
+//         lastPost.timestamp,
+//         lastPost.id
+//       );
+//     }
+
+//     postQuery
+//       .limitToFirst(10 + numPostsLoaded)
+//       .get()
+//       .then((snapshot) => {
+//         const allPosts = document.querySelector(".dos-landing-page");
+//         const newsFeedTitle = allPosts.firstElementChild; // get the first child element (h2)
+
+//         if (localStorage.getItem("IsMyPosts") === "true") {
+//           newsFeedTitle.textContent = "My Posts";
+//         } else {
+//           newsFeedTitle.textContent = "Newsfeed";
+//         }
+
+//         if (lastPost === null) {
+//           allPosts.innerHTML = ""; // remove all other child elements
+//           allPosts.appendChild(newsFeedTitle); // append the h2 element back to the .dos-landing-page element
+//         }
+
+//         snapshot.forEach((childSnapshot) => {
+//           const post = childSnapshot.val();
+
+//           if (localStorage.getItem("IsMyPosts") === "true") {
+//             if (post.author !== localStorage.getItem("userName")) {
+//               return;
+//             }
+//           }
+
+//           if (
+//             lastPost === null ||
+//             post.timestamp < lastPost.timestamp ||
+//             (post.timestamp === lastPost.timestamp && post.id < lastPost.id)
+//           ) {
+//             lastPost = { timestamp: post.timestamp, id: childSnapshot.key };
+//           }
+
+//           // Push
+
+//           numPostsLoaded -= 1;
+//         });
+
+//         isLoading = false;
+//       });
+//   }
+// };
+
+// // If the user has scrolled to the bottom of the page, load more posts
+// window.addEventListener("scroll", () => {
+//   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+//     numPostsLoaded += 10;
+//     loadPosts();
+//   }
+// });
 
 const loadPosts = function () {
   // Listen for changes in the database and update UI accordingly
@@ -367,12 +463,26 @@ const loadPosts = function () {
       const postedDateCreate = document.createElement("span");
 
       postSubjectCreate.innerHTML = postSubject;
-      postContentCreate.innerHTML = postContentValue;
 
       postContentCreate.innerHTML = postContentValue.replace(
-        /(https?:\/\/[^\s]+)/g,
-        '<a href="$1">$1</a>'
+        /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(shorturl\.at\/[^\s]+)/g,
+        function (match) {
+          if (match.startsWith("http")) {
+            return (
+              '<a target = "_blank" href="' + match + '">' + match + "</a>"
+            );
+          } else {
+            return (
+              '<a target = "_blank" href="http://' +
+              match +
+              '">' +
+              match +
+              "</a>"
+            );
+          }
+        }
       );
+
       postedByCreate.innerHTML = postedBy;
 
       let timeString = "";
@@ -503,7 +613,24 @@ async function userMessage() {
         const messageContentCreate = document.createElement("p");
 
         messageTitleCreate.textContent = messageTitle;
-        messageContentCreate.textContent = messageContent;
+        messageContentCreate.innerHTML = messageContent.replace(
+          /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(shorturl\.at\/[^\s]+)/g,
+          function (match) {
+            if (match.startsWith("http")) {
+              return (
+                '<a target = "_blank" href="' + match + '">' + match + "</a>"
+              );
+            } else {
+              return (
+                '<a target = "_blank" href="http://' +
+                match +
+                '">' +
+                match +
+                "</a>"
+              );
+            }
+          }
+        );
 
         messageDivCreate.appendChild(messageTitleCreate);
         messageDivCreate.appendChild(messageContentCreate);
@@ -524,6 +651,8 @@ feedback.addEventListener("click", function () {
   fbError.textContent = "";
   if (userStatus === "Admin") {
     document.querySelector("#feedback-link").classList.remove("hidden");
+    document.querySelector("#message-link").classList.remove("hidden");
+    document.querySelector("#change-name-link").classList.remove("hidden");
   }
 
   document.querySelector(".feedback-container").classList.toggle("hidden");
@@ -589,8 +718,49 @@ feedbackInputForHotkey.forEach((fbInput) =>
   })
 );
 
-const surveyTest = document.querySelector(".survey-container");
+const submitButton = document.querySelector("#sv-submit");
+const answersContainer = document.querySelector("section");
+const svContainer = document.querySelector(".survey-container");
+const svErr = document.querySelector("#sv-error");
 
-surveyTest.addEventListener("click", function () {
-  toggleModal();
+submitButton.addEventListener("click", () => {
+  try {
+    const answer1 = document.querySelector('input[name="no:1"]:checked').value;
+    const answer2 = document.querySelector('input[name="no:2"]:checked').value;
+    const answer3 = document.querySelector('input[name="no:3"]:checked').value;
+    const answer4 = document.querySelector('input[name="no:4"]:checked').value;
+    const answer5 = document.querySelector('input[name="no:5"]:checked').value;
+    let submittedBy = `Submited By: ${currentUser.val().name}`;
+
+    if (
+      answer1 === "" ||
+      answer2 === "" ||
+      answer3 === "" ||
+      answer4 === "" ||
+      answer5 === ""
+    ) {
+      svErr.textContent = "Feedback Title or Content is not filled.";
+      return;
+    }
+
+    const surveyAns = {
+      author: currentUser.val().name,
+      title: "Survey",
+      content: `1. ${answer1}
+      2. ${answer2}
+      3. ${answer3}
+      4. ${answer4}
+      5. ${answer5}`,
+      datePosted: Date.now(),
+    };
+
+    const feedbackRefs = ref(database, "feedbacks/" + Date.now());
+    set(feedbackRefs, surveyAns);
+    alert(`Thank you for helping us make Dos better ${surveyAns.author}!`);
+
+    toggleModal();
+    localStorage.setItem("submitted", true);
+  } catch (error) {
+    svErr.textContent = "Please answer all questions before submitting.";
+  }
 });

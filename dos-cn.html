@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="Admin Dos - Send or Delete Messages" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://snplmntn.github.io/ICT-11-2-WEBSITE/img/logo.png"
+    />
+    <meta
+      property="og:url"
+      content="https://snplmntn.github.io/ICT-11-2-WEBSITE/dos-message.html"
+    />
+    <title>Dos - Change Name</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Electrolize&family=Rubik+Mono+One&family=Saira+Condensed:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="icon" href="img/logo.png" />
+  </head>
+
+  <body>
+    <div class="container-all">
+      <div class="contents">
+        <div class="desc-containers">
+          <h1>Change Name [BETA]</h1>
+          <p>
+            Please note that the Change Name feature is currently in beta
+            testing. While we have done our best to ensure its reliability,
+            there may still be some bugs or issues that we have not yet
+            identified. Additionally, it is important to note that any changes
+            you make to your name will be permanently applied to your account,
+            so please make sure that you are absolutely certain that you want to
+            proceed with this action before clicking the "Change Name" button.
+            If you have any questions or concerns, please do not hesitate to
+            reach out to our support team for assistance.
+          </p>
+        </div>
+      </div>
+
+      <div class="login-signin-container">
+        <div class="container-login">
+          <!-- Login Form -->
+          <form class="login-form">
+            <div class="form-container">
+              <h2>Change Name</h2>
+              <label>
+                <input
+                  type="text"
+                  id="input-c-name"
+                  placeholder="Current Name"
+                />
+              </label>
+
+              <label>
+                <input type="text" id="input-n-name" placeholder="New Name" />
+              </label>
+
+              <button type="button" id="change-name-button">Change Name</button>
+              <div id="change-name-correct" class="correct"></div>
+              <div id="change-name-error" class="error"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="dos-cn.js"></script>
+  </body>
+</html>

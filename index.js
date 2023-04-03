@@ -4,8 +4,6 @@ const signupContainer = document.querySelector(".container-signup");
 const loginContainer = document.querySelector(".container-login");
 const signUpMessage = document.querySelector(".signup-message");
 const loginMessage = document.querySelector(".login-message");
-console.log(signUpMessage);
-console.log(loginMessage);
 
 if (localStorage.getItem("signUp") === "false") {
   signupContainer.classList.remove("hidden");

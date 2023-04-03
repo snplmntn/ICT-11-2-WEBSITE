@@ -58,7 +58,7 @@
     </nav>
     <div class="info-content-main-wrapper">
       <div class="information-wrapper aside-contents">
-        <div class="headers">
+        <div class="headers" id="user-info">
           <h2>
             Hello
             <span id="user-name"></span>!
@@ -71,10 +71,10 @@
           </div>
 
           <div class="container" id="tac-fb">
-            <a href="terms-and-condition.html" target="_blank"
+            <a href="terms-and-condition.html" target="_blank" id="tac-link"
               >Terms & Conditions.</a
             >
-            <p id="feedback">Send feedback</p>
+            <p id="feedback">Give us your feedback</p>
           </div>
         </div>
       </div>
@@ -164,7 +164,7 @@
 
     <div class="feedback-container hidden">
       <input type="button" class="btn-close" value="&times;" />
-      <h2>Send Feedback</h2>
+      <h2>Give us your Feedback</h2>
       <div class="send-fb-container">
       
           <label>
@@ -194,6 +194,20 @@
           id="feedback-link"
           >Feedbacks</a
         >
+        <a
+        href="dos-message.html"
+        target="_blank"
+        class="hidden"
+        id="message-link"
+        >Send Message</a
+      >
+      <a
+      href="dos-cn.html"
+      target="_blank"
+      class="hidden"
+      id="change-name-link"
+      >Change Name</a
+    >
         <div id="announcement-error" class="error"></div>
         <button type="button" id="fb-submit">Submit</button>
       </div>
@@ -201,60 +215,61 @@
 
     <div class="survey-container">
       <input type="button" class="btn-close" value="&times;" />
-      <h2>Surbeytes</h2>
-      <div class="send-sv-container">
+        <h2>Surbeytes</h2>
+        <div class="send-sv-container">
 
         <p>Have you found it easy to navigate the Dos platform and find the features you need?</p>
 
         <div class="radioboxes">
-          <input type="radio" id="yes1" name="no:1" value="1: Yes">
+          <input type="radio" id="yes1" name="no:1" value="Yes">
           <label for="yes1">Yes</label>
-          <input type="radio" id="no1" name="no:1" value="1: No">
+          <input type="radio" id="no1" name="no:1" value="No">
           <label for="no1">No</label>
-      </div>
+        </div>
 
         <p>
           Do you feel that the privacy settings on Dos adequately protect your personal information?</p>
 
         <div class="radioboxes">
-          <input type="radio" id="yes2" name="no:2" value="1: Yes">
+          <input type="radio" id="yes2" name="no:2" value="Yes">
           <label for="yes2">Yes</label>
-          <input type="radio" id="no2" name="no:2" value="1: No">
+          <input type="radio" id="no2" name="no:2" value="No">
           <label for="no2">No</label>
-      </div>
+        </div>
 
-      <p>
+       <p>
         Have you encountered any technical problems while using Dos, such as issues with posts and announcements not appearing properly or problems with the display of the platform?</p>
 
-      <div class="radioboxes">
-        <input type="radio" id="yes2" name="no:2" value="1: Yes">
-        <label for="yes2">Yes</label>
-        <input type="radio" id="no2" name="no:2" value="1: No">
-        <label for="no2">No</label>
-    </div>
+       <div class="radioboxes">
+        <input type="radio" id="yes3" name="no:3" value="Yes">
+        <label for="yes3">Yes</label>
+        <input type="radio" id="no3" name="no:3" value="No">
+        <label for="no3">No</label>
+       </div>
+    
 
     <p>
-      Do you feel that the privacy settings on Dos adequately protect your personal information?</p>
+      Are you satisfied with the overall performance of the website, in terms of speed and responsiveness?</p>
 
     <div class="radioboxes">
-      <input type="radio" id="yes2" name="no:2" value="1: Yes">
-      <label for="yes2">Yes</label>
-      <input type="radio" id="no2" name="no:2" value="1: No">
-      <label for="no2">No</label>
+      <input type="radio" id="yes4" name="no:4" value="Yes">
+      <label for="yes4">Yes</label>
+      <input type="radio" id="no4" name="no:4" value="No">
+      <label for="no4">No</label>
   </div>
 
   <p>
-    Do you feel that the privacy settings on Dos adequately protect your personal information?</p>
+    Would you like to see any new features or improvements on the website in the future?</p>
 
   <div class="radioboxes">
-    <input type="radio" id="yes2" name="no:2" value="1: Yes">
-    <label for="yes2">Yes</label>
-    <input type="radio" id="no2" name="no:2" value="1: No">
-    <label for="no2">No</label>
-</div>
-        <div id="feedback-error" class="error"></div>
-        <div id="announcement-error" class="error"></div>
+    <input type="radio" id="yes5" name="no:5" value="Yes">
+    <label for="yes5">Yes</label>
+    <input type="radio" id="no5" name="no:5" value="No">
+    <label for="no5">No</label>
+  </div>
+        
         <button type="button" id="sv-submit">Submit</button>
+        <div id="sv-error" class="error"></div>
       </div>
     </div>
 
