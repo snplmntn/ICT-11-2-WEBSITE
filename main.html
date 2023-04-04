@@ -10,10 +10,6 @@
       property="og:image"
       content="https://snplmntn.github.io/ICT-11-2-WEBSITE/img/logo.png"
     />
-    <meta
-      property="og:url"
-      content="https://snplmntn.github.io/ICT-11-2-WEBSITE/main.html"
-    />
     <title>Dos</title>
     <link
       rel="stylesheet"
@@ -81,6 +77,15 @@
       <main id="main">
         <section class="dos-landing-page" id="dos">
           <h2 id="newsfeed">Newsfeed</h2>
+          <p class="loading">Loading...</p>
+<!-- 
+          <div class="post">
+            <h2>TEST</h2>
+            <p>TEST</p>
+            <img src="img/logo.png" alt="">
+            <p>posted by test</p>
+            <span>1 sec ago</span>
+          </div> -->
           <!-- appended post goes here -->
         </section>
       </main>
@@ -90,6 +95,7 @@
         </div>
         <div class="info-announce-contents" id="new-announcements">
           <!-- appended announcement divs goes here -->
+          <p class="loading">Loading...</p>
         </div>
       </div>
     </div>
@@ -149,6 +155,11 @@
               placeholder="Enter text..."
             ></textarea>
           </label>
+
+          <!-- <label>
+            <input type="file" id="post-img" name="img" accept="image/*">
+          </label> -->
+
           <div id="post-error" class="error"></div>
         </div>
         <div class="container">
@@ -160,7 +171,7 @@
         </div>
       </div>
     </div>
-    <div class="overlay"></div>
+    <div class="overlay hidden"></div>
 
     <div class="feedback-container hidden">
       <input type="button" class="btn-close" value="&times;" />
@@ -213,7 +224,7 @@
       </div>
     </div>
 
-    <div class="survey-container">
+    <div class="survey-container hidden">
       <input type="button" class="btn-close" value="&times;" />
         <h2>Surbeytes</h2>
         <div class="send-sv-container">

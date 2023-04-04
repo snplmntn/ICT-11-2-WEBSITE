@@ -20,7 +20,9 @@ import {
   orderByChild,
   query,
   limitToFirst,
+  limitToLast,
 } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBrtH6Qajw348Qzv4Urz9OSrrSmr6b84yM",
@@ -34,6 +36,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
+const storage = getStorage();
 
 //Overlay
 const overlay = document.querySelector(".overlay");
@@ -42,6 +45,7 @@ let currentUser;
 let userStatus = "user";
 
 const name = document.querySelector("#user-name");
+
 function checkAuthState() {
   auth.onAuthStateChanged(function (user) {
     if (user) {
@@ -73,14 +77,11 @@ window.addEventListener("load", function () {
   loader.classList.add("hidden");
   checkAuthState();
 
-  if (localStorage.getItem("submitted") === "true" || userStatus === "Admin") {
-    toggleModal();
+  if (localStorage.getItem("submitted") === "false") {
+    this.document.querySelector(".survey-container").classList.remove("hidden");
+    overlay.classList.remove("hidden");
   }
 });
-
-// window.addEventListener("beforeunload", function () {
-//   localStorage.removeItem("lastAnnouncement");
-// });
 
 const logOut = document.querySelector("#logout-button");
 const logOutLink = document.querySelectorAll(".logout-link");
@@ -184,6 +185,7 @@ const announcementsRef = ref(database, "announcements");
 let announcementTitles = [];
 
 onValue(announcementsRef, (snapshot) => {
+  announceContainer.innerHTML = "";
   announcementTitles = []; // clear the announcementTitles array
   snapshot.forEach((childSnapshot) => {
     const announcement = childSnapshot.val();
@@ -324,6 +326,25 @@ function postFunction() {
     return;
   }
 
+  // const fileInput = document.getElementById("post-img");
+  // const file = fileInput.files[0];
+  // const storageRef = ref(storage).child(`images/${file.name}`);
+  // const uploadTask = storageRef.put(file);
+
+  // uploadTask.on(
+  //   "state_changed",
+  //   (snapshot) => {
+  //     // handle progress
+  //   },
+  //   (error) => {
+  //     // handle error
+  //   },
+  //   async () => {
+  //     const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+  //     console.log(downloadURL);
+  //   }
+  // );
+
   let postedBy;
   if (checkBox.checked == true) postedBy = "Anonymous";
   else postedBy = `Posted By: ${currentUser.val().name}`;
@@ -349,83 +370,9 @@ function postFunction() {
 post.addEventListener("click", postFunction);
 
 const postRefs = ref(database, "posts/");
-// const originalQuery = query(postRefs, orderByChild("timestamp"));
-
-// let lastPost = null;
-// let isLoading = false;
-// let numPostsLoaded = 0;
-
-// const loadPosts = function () {
-//   // Only load more posts if we're not already loading and there are more to load
-//   if (!isLoading && (lastPost === null || numPostsLoaded > 0)) {
-//     isLoading = true;
-
-//     // Listen for changes in the database and update UI accordingly
-//     let postQuery = originalQuery;
-
-//     if (lastPost !== null) {
-//       postQuery = query(postRefs, orderByChild("timestamp")).startAt(
-//         lastPost.timestamp,
-//         lastPost.id
-//       );
-//     }
-
-//     postQuery
-//       .limitToFirst(10 + numPostsLoaded)
-//       .get()
-//       .then((snapshot) => {
-//         const allPosts = document.querySelector(".dos-landing-page");
-//         const newsFeedTitle = allPosts.firstElementChild; // get the first child element (h2)
-
-//         if (localStorage.getItem("IsMyPosts") === "true") {
-//           newsFeedTitle.textContent = "My Posts";
-//         } else {
-//           newsFeedTitle.textContent = "Newsfeed";
-//         }
-
-//         if (lastPost === null) {
-//           allPosts.innerHTML = ""; // remove all other child elements
-//           allPosts.appendChild(newsFeedTitle); // append the h2 element back to the .dos-landing-page element
-//         }
-
-//         snapshot.forEach((childSnapshot) => {
-//           const post = childSnapshot.val();
-
-//           if (localStorage.getItem("IsMyPosts") === "true") {
-//             if (post.author !== localStorage.getItem("userName")) {
-//               return;
-//             }
-//           }
-
-//           if (
-//             lastPost === null ||
-//             post.timestamp < lastPost.timestamp ||
-//             (post.timestamp === lastPost.timestamp && post.id < lastPost.id)
-//           ) {
-//             lastPost = { timestamp: post.timestamp, id: childSnapshot.key };
-//           }
-
-//           // Push
-
-//           numPostsLoaded -= 1;
-//         });
-
-//         isLoading = false;
-//       });
-//   }
-// };
-
-// // If the user has scrolled to the bottom of the page, load more posts
-// window.addEventListener("scroll", () => {
-//   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-//     numPostsLoaded += 10;
-//     loadPosts();
-//   }
-// });
-
-const loadPosts = function () {
+const loadPosts = async function () {
   // Listen for changes in the database and update UI accordingly
-  onValue(postRefs, (snapshot) => {
+  await onValue(postRefs, (snapshot) => {
     const allPosts = document.querySelector(".dos-landing-page");
     const newsFeedTitle = allPosts.firstElementChild; // get the first child element (h2)
 
@@ -689,38 +636,7 @@ function submitFeedbackFunction() {
 
 submitFb.addEventListener("click", submitFeedbackFunction);
 
-//Hot Keys
-const announceInputForHotkey = document.querySelectorAll(".announce-input");
-const postInputForHotkey = document.querySelectorAll(".post-input");
-const feedbackInputForHotkey = document.querySelectorAll(".fb-input");
-
-announceInputForHotkey.forEach((announceInput) =>
-  announceInput.addEventListener("keydown", (event) => {
-    if (event.code === "Enter" || event.code === "NumpadEnter") {
-      announceFunction();
-    }
-  })
-);
-
-postInputForHotkey.forEach((postInput) =>
-  postInput.addEventListener("keydown", (event) => {
-    if (event.code === "Enter" || event.code === "NumpadEnter") {
-      postFunction();
-    }
-  })
-);
-
-feedbackInputForHotkey.forEach((fbInput) =>
-  fbInput.addEventListener("keydown", (event) => {
-    if (event.code === "Enter" || event.code === "NumpadEnter") {
-      submitFeedbackFunction();
-    }
-  })
-);
-
 const submitButton = document.querySelector("#sv-submit");
-const answersContainer = document.querySelector("section");
-const svContainer = document.querySelector(".survey-container");
 const svErr = document.querySelector("#sv-error");
 
 submitButton.addEventListener("click", () => {
@@ -764,3 +680,32 @@ submitButton.addEventListener("click", () => {
     svErr.textContent = "Please answer all questions before submitting.";
   }
 });
+
+//Hot Keys
+const announceInputForHotkey = document.querySelectorAll(".announce-input");
+const postInputForHotkey = document.querySelectorAll(".post-input");
+const feedbackInputForHotkey = document.querySelectorAll(".fb-input");
+
+announceInputForHotkey.forEach((announceInput) =>
+  announceInput.addEventListener("keydown", (event) => {
+    if (event.code === "Enter" || event.code === "NumpadEnter") {
+      announceFunction();
+    }
+  })
+);
+
+postInputForHotkey.forEach((postInput) =>
+  postInput.addEventListener("keydown", (event) => {
+    if (event.code === "Enter" || event.code === "NumpadEnter") {
+      postFunction();
+    }
+  })
+);
+
+feedbackInputForHotkey.forEach((fbInput) =>
+  fbInput.addEventListener("keydown", (event) => {
+    if (event.code === "Enter" || event.code === "NumpadEnter") {
+      submitFeedbackFunction();
+    }
+  })
+);

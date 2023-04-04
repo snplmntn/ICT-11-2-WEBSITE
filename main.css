@@ -177,6 +177,12 @@ section {
   border-radius: 1rem;
 }
 
+.loading {
+  font-size: 22px;
+  font-weight: 400;
+  text-align: center;
+}
+
 .post {
   padding: 1rem;
   background-color: #52b78875;
