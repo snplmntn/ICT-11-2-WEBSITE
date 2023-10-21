@@ -31,6 +31,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase();
+const overlay = document.querySelector(".overlay");
+function checkAuthState() {
+  auth.onAuthStateChanged(function (user) {
+    if (user) {
+      const databaseRef = ref(database, "users/" + user.uid);
+      localStorage.setItem("userUID", user.uid);
+      if (
+        user.uid === "rdZtMxgvm7bjFEVeCCKoJ41loth2" ||
+        user.uid === "o1LjDmMZMAQViYOndIGgOOwwz6h1" ||
+        user.uid === "PjhIFNUKXLa0ru3L5W1xoRebWin1"
+      ) {
+        overlay.classList.add("hidden");
+      } else {
+        window.location.href = "main.html";
+      }
+    } else {
+      window.location.href = "index.html";
+    }
+  });
+}
+
+window.addEventListener("load", function () {
+  checkAuthState();
+});
 
 //Send Message
 const sendMessage = document.querySelector("#send-button");

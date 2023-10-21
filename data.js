@@ -58,7 +58,8 @@ const logIn_button = document.querySelector("#login-button");
 //Error message
 let sError = document.getElementById("signup-error");
 let lError = document.getElementById("login-error");
-
+const logIn = document.querySelector(".container-login");
+const signUp = document.querySelector(".container-signup");
 // Signup function
 function signup() {
   const email = document.getElementById("signup-email").value;
@@ -79,27 +80,32 @@ function signup() {
     confirmPassword === ""
   ) {
     sError.textContent = "Please fill up all the needed information.";
+    signUp.classList.add("error-animation");
     return;
   }
 
   if (validate_email(email) == false) {
     sError.textContent = "Email must be valid.";
+    signUp.classList.add("error-animation");
     return;
   }
 
   if (validate_password(password) == false) {
     sError.textContent = "Password must consist of atleast 6 characters.";
+    signUp.classList.add("error-animation");
     return;
   }
 
   if (password !== confirmPassword) {
     sError.textContent = "Password do not match.";
+    signUp.classList.add("error-animation");
     return;
   }
 
   if (!termsCondition.checked) {
     sError.textContent =
       "You must agree to the terms and conditions to continue..";
+    signUp.classList.add("error-animation");
     return;
   }
 
@@ -146,9 +152,11 @@ function login() {
 
   if (email === "" || password === "") {
     lError.textContent = "Please fill up all the needed information.";
+    logIn.classList.add("error-animation");
   }
   if (validate_email(email) == false) {
     lError.textContent = "Email is not valid.";
+    logIn.classList.add("error-animation");
     return;
     // Don't continue running the code
   }
@@ -179,6 +187,14 @@ function login() {
 
 signUp_button.addEventListener("click", signup);
 logIn_button.addEventListener("click", login);
+
+signUp.addEventListener("animationend", () => {
+  signUp.classList.remove("error-animation");
+});
+
+logIn.addEventListener("animationend", () => {
+  logIn.classList.remove("error-animation");
+});
 
 // Validate Functions
 function validate_email(email) {

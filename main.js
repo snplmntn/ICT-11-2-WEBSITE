@@ -16,10 +16,7 @@ import {
   get,
   push,
   onValue,
-  child,
   orderByChild,
-  query,
-  limitToFirst,
   limitToLast,
 } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-storage.js";
@@ -158,8 +155,12 @@ function announceFunction() {
   const titleValue = document.querySelector("#title");
   const contentValue = document.querySelector("#content");
 
-  if (titleValue.value === "" || contentValue.value === "") {
+  if (titleValue.value.trim() === "" || contentValue.value.trim() === "") {
+    announceError.addEventListener("animationend", () => {
+      announceError.classList.remove("error-animation");
+    });
     announceError.textContent = "Title or Content is not filled.";
+    announceError.classList.add("error-animation");
     return;
   }
   const announcement = {
@@ -184,114 +185,119 @@ submitAnnounce.addEventListener("click", announceFunction);
 const announcementsRef = ref(database, "announcements");
 let announcementTitles = [];
 
-onValue(announcementsRef, (snapshot) => {
-  announceContainer.innerHTML = "";
-  announcementTitles = []; // clear the announcementTitles array
-  snapshot.forEach((childSnapshot) => {
-    const announcement = childSnapshot.val();
-    const contentValue = announcement.content;
-    const titleValue = announcement.title;
-    const author = announcement.author;
-    const datePosted = announcement.announementDate;
+async function LoadAnnouncements() {
+  await onValue(announcementsRef, (snapshot) => {
+    announceContainer.innerHTML = "";
+    announcementTitles = []; // clear the announcementTitles array
+    snapshot.forEach((childSnapshot) => {
+      const announcement = childSnapshot.val();
+      const contentValue = announcement.content;
+      const titleValue = announcement.title;
+      const author = announcement.author;
+      const datePosted = announcement.announementDate;
 
-    let titleExists = false;
-    if (announcementTitles.includes(titleValue)) {
-      return;
-    }
+      let titleExists = false;
+      if (announcementTitles.includes(titleValue)) {
+        return;
+      }
 
-    if (!titleExists) {
-      const divCreate = document.createElement("div");
-      divCreate.classList.add("announcement");
-      const titleCreate = document.createElement("h2");
-      const contentCreate = document.createElement("p");
-      const postedDateCreate = document.createElement("span");
+      if (!titleExists) {
+        const divCreate = document.createElement("div");
+        divCreate.classList.add("announcement");
+        const titleCreate = document.createElement("h2");
+        const contentCreate = document.createElement("p");
+        const postedDateCreate = document.createElement("span");
 
-      contentCreate.innerHTML = contentValue.replace(
-        /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(shorturl\.at\/[^\s]+)/g,
-        function (match) {
-          if (match.startsWith("http")) {
-            return (
-              '<a target = "_blank" href="' + match + '">' + match + "</a>"
-            );
-          } else {
-            return (
-              '<a target = "_blank" href="http://' +
-              match +
-              '">' +
-              match +
-              "</a>"
-            );
+        contentCreate.innerHTML = contentValue.replace(
+          /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(shorturl\.at\/[^\s]+)/g,
+          function (match) {
+            if (match.startsWith("http")) {
+              return (
+                '<a target = "_blank" href="' + match + '">' + match + "</a>"
+              );
+            } else {
+              return (
+                '<a target = "_blank" href="http://' +
+                match +
+                '">' +
+                match +
+                "</a>"
+              );
+            }
+          }
+        );
+
+        announcementTitles.push(titleValue);
+
+        if (datePosted !== "") {
+          let postTime = Math.floor((new Date() - datePosted) / 1000);
+
+          // Prevent NaN time or -1
+          if (postTime < 0 || postTime === NaN) {
+            postTime = 1;
+          }
+
+          if (postTime < 60)
+            postedDateCreate.textContent = `${author}: ${postTime} seconds ago`;
+
+          if (postTime >= 60 && postTime < 120) {
+            postedDateCreate.textContent = `${author}: ${Math.trunc(
+              postTime / 60
+            )} minute ago`;
+          } else if (postTime >= 120) {
+            postedDateCreate.textContent = `${author}: ${Math.trunc(
+              postTime / 60
+            )} minutes ago`;
+          }
+
+          if (postTime >= 3600 && postTime < 7200) {
+            postedDateCreate.textContent = `${author}: ${Math.trunc(
+              postTime / 3600
+            )} hour ago`;
+          } else if (postTime >= 7200)
+            postedDateCreate.textContent = `${author}: ${Math.trunc(
+              postTime / 3600
+            )} hours ago`;
+
+          if (postTime >= 86400 && postTime < 172800)
+            postedDateCreate.textContent = `${author}: ${Math.trunc(
+              postTime / 86400
+            )} day ago`;
+          else if (postTime >= 172800)
+            postedDateCreate.textContent = `${author}: ${Math.trunc(
+              postTime / 86400
+            )} days ago`;
+
+          if (postTime >= 604800 && postTime < 691200)
+            postedDateCreate.textContent = `${author}: ${Math.trunc(
+              postTime / 604800
+            )} week ago`;
+          else if (postTime >= 691200) {
+            let postedDate = new Date(datePosted);
+            let dateString = postedDate.toLocaleDateString();
+            postedDateCreate.textContent = `${author}: ${dateString}`;
           }
         }
-      );
 
-      announcementTitles.push(titleValue);
+        titleCreate.innerHTML = titleValue;
 
-      if (datePosted !== "") {
-        let postTime = Math.floor((new Date() - datePosted) / 1000);
-
-        // Prevent NaN time or -1
-        if (postTime < 0 || postTime === NaN) {
-          postTime = 1;
+        if (document.querySelector(".announcement")) {
+          const firstChild = announceContainer.firstChild;
+          announceContainer.insertBefore(divCreate, firstChild);
+        } else {
+          announceContainer.appendChild(divCreate);
         }
 
-        if (postTime < 60)
-          postedDateCreate.textContent = `${author}: ${postTime} seconds ago`;
-
-        if (postTime >= 60 && postTime < 120) {
-          postedDateCreate.textContent = `${author}: ${Math.trunc(
-            postTime / 60
-          )} minute ago`;
-        } else if (postTime >= 120) {
-          postedDateCreate.textContent = `${author}: ${Math.trunc(
-            postTime / 60
-          )} minutes ago`;
-        }
-
-        if (postTime >= 3600 && postTime < 7200) {
-          postedDateCreate.textContent = `${author}: ${Math.trunc(
-            postTime / 3600
-          )} hour ago`;
-        } else if (postTime >= 7200)
-          postedDateCreate.textContent = `${author}: ${Math.trunc(
-            postTime / 3600
-          )} hours ago`;
-
-        if (postTime >= 86400 && postTime < 172800)
-          postedDateCreate.textContent = `${author}: ${Math.trunc(
-            postTime / 86400
-          )} day ago`;
-        else if (postTime >= 172800)
-          postedDateCreate.textContent = `${author}: ${Math.trunc(
-            postTime / 86400
-          )} days ago`;
-
-        if (postTime >= 604800 && postTime < 691200)
-          postedDateCreate.textContent = `${author}: ${Math.trunc(
-            postTime / 604800
-          )} week ago`;
-        else if (postTime >= 691200) {
-          let postedDate = new Date(datePosted);
-          let dateString = postedDate.toLocaleDateString();
-          postedDateCreate.textContent = `${author}: ${dateString}`;
-        }
+        divCreate.appendChild(titleCreate);
+        divCreate.appendChild(contentCreate);
+        divCreate.appendChild(postedDateCreate);
       }
-
-      titleCreate.innerHTML = titleValue;
-
-      if (document.querySelector(".announcement")) {
-        const firstChild = announceContainer.firstChild;
-        announceContainer.insertBefore(divCreate, firstChild);
-      } else {
-        announceContainer.appendChild(divCreate);
-      }
-
-      divCreate.appendChild(titleCreate);
-      divCreate.appendChild(contentCreate);
-      divCreate.appendChild(postedDateCreate);
-    }
+    });
   });
-});
+}
+
+//Load Announcement
+LoadAnnouncements();
 
 // POST FUNCTIONS!!
 const createPostBtn = document.querySelector(".create-post");
@@ -316,13 +322,186 @@ content.addEventListener("keyup", function (e) {
   content.style.height = `${scrollHeight}px`;
 });
 
+let postRendered = 0;
+let postToBeRendered = 10;
+let myPost = 0;
+
+const postRefs = ref(database, "posts/");
+async function LoadPosts() {
+  // Listen for changes in the database and update UI accordingly
+  await onValue(postRefs, (snapshot) => {
+    const allPosts = document.querySelector(".dos-landing-page");
+    const newsFeedTitle = allPosts.firstElementChild; // get the first child element (h2)
+    const loadButton = document.querySelector(".load-more");
+    const loading = document.querySelector(".loading");
+
+    if (loadButton) loadButton.classList.remove("hidden");
+
+    if (localStorage.getItem("IsMyPosts") === "true") {
+      postToBeRendered = null;
+      newsFeedTitle.textContent = "My Posts";
+    } else newsFeedTitle.textContent = "Newsfeed";
+
+    // allPosts.innerHTML = ""; // remove all other child elements
+    document.querySelectorAll(".post").forEach((e) => e.remove());
+    // allPosts.appendChild(newsFeedTitle); // append the h2 element back to the .dos-landing-page element
+
+    let postArray = [];
+    snapshot.forEach((childSnapshot) => {
+      postArray.push(childSnapshot.key);
+    });
+    postArray.reverse().forEach((key) => {
+      const realPostRef = ref(database, `posts/${key}`);
+      onValue(realPostRef, (realSnapshot) => {
+        const post = realSnapshot.val();
+
+        if (localStorage.getItem("IsMyPosts") === "true") {
+          if (post.author !== localStorage.getItem("userName")) {
+            return;
+          } else {
+            myPost++;
+          }
+        }
+
+        if (postRendered === postToBeRendered) {
+          return;
+        }
+
+        //Database Ref
+        let postSubject = post.subject;
+        const postContentValue = post.content;
+        const postedBy = post.postedBy;
+        let datePosted = post.datePosted;
+        if (postSubject === undefined) postSubject = "";
+        if (datePosted === undefined) datePosted = "";
+        //HTML Ref
+        const postDivCreate = document.createElement("div");
+        postDivCreate.classList.add("post");
+        const postSubjectCreate = document.createElement("h2");
+        const postContentCreate = document.createElement("p");
+        const postedByCreate = document.createElement("p");
+        const postedDateCreate = document.createElement("span");
+        postSubjectCreate.innerHTML = postSubject;
+
+        postContentCreate.innerHTML = postContentValue.replace(
+          /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(shorturl\.at\/[^\s]+)/g,
+          function (match) {
+            if (match.startsWith("http")) {
+              return (
+                '<a target = "_blank" href="' + match + '">' + match + "</a>"
+              );
+            } else {
+              return (
+                '<a target = "_blank" href="http://' +
+                match +
+                '">' +
+                match +
+                "</a>"
+              );
+            }
+          }
+        );
+
+        postedByCreate.innerHTML = postedBy;
+        let timeString = "";
+        if (datePosted !== "") {
+          const postTime = Math.floor((new Date() - datePosted) / 1000);
+          if (postTime < 0 || postTime === NaN) {
+            postTime = 1;
+            timeString = postTime + " second ago";
+          } else if (postTime < 60) {
+            timeString = postTime + " seconds ago";
+          } else if (postTime < 120) {
+            timeString = Math.trunc(postTime / 60) + " minute ago";
+          } else if (postTime < 3600) {
+            timeString = Math.trunc(postTime / 60) + " minutes ago";
+          } else if (postTime < 7200) {
+            timeString = Math.trunc(postTime / 3600) + " hour ago";
+          } else if (postTime < 86400) {
+            timeString = Math.trunc(postTime / 3600) + " hours ago";
+          } else if (postTime < 172800) {
+            timeString = Math.trunc(postTime / 86400) + " day ago";
+          } else if (postTime < 604800) {
+            timeString = Math.trunc(postTime / 86400) + " days ago";
+          } else if (postTime < 691200) {
+            timeString = Math.trunc(postTime / 604800) + " week ago";
+          } else {
+            const postedDate = new Date(datePosted);
+            const dateString = postedDate.toLocaleDateString();
+            timeString = "Posted on " + dateString;
+          }
+        }
+        postedDateCreate.textContent = timeString;
+        postRendered++;
+
+        if (loading) loading.remove();
+
+        if (postRendered === postArray.length) {
+          loadButton.classList.add("hidden");
+        } else if (
+          loadButton.classList.contains("hidden") &&
+          postRendered !== postArray.length
+        ) {
+          loadButton.classList.remove("hidden");
+        }
+
+        if (
+          postRendered === myPost &&
+          localStorage.getItem("IsMyPosts") === "true"
+        ) {
+          loadButton.classList.add("hidden");
+        }
+
+        allPosts.insertBefore(postDivCreate, loadButton);
+
+        postDivCreate.appendChild(postSubjectCreate);
+        postDivCreate.appendChild(postContentCreate);
+        postDivCreate.appendChild(postedByCreate);
+        postDivCreate.appendChild(postedDateCreate);
+      });
+    });
+  });
+}
+
+document.querySelector(".load-more").addEventListener("click", () => {
+  postRendered = 0;
+  postToBeRendered += 10;
+  LoadPosts();
+});
+
+document.querySelectorAll(".my-posts").forEach(function (myPost) {
+  myPost.addEventListener("click", function () {
+    postRendered = 0;
+    postToBeRendered = null;
+    myPost = 0;
+    localStorage.setItem("IsMyPosts", "true");
+    LoadPosts();
+  });
+});
+
+document.querySelectorAll(".home").forEach(function (home) {
+  home.addEventListener("click", function () {
+    postRendered = 0;
+    postToBeRendered = 10;
+    localStorage.setItem("IsMyPosts", "false");
+    LoadPosts();
+  });
+});
+
+//Loads the posts when u enter the dashboard
+LoadPosts();
+
 //appending posts
 const post = document.querySelector("#post-btn");
 const checkBox = document.querySelector("#anonymous");
 
 function postFunction() {
-  if (subject.value === "" || content.value === "") {
+  if (subject.value.trim() === "" || content.value.trim() === "") {
+    errorMessage.addEventListener("animationend", () => {
+      errorMessage.classList.remove("error-animation");
+    });
     errorMessage.textContent = "Subject or Content is not filled.";
+    errorMessage.classList.add("error-animation");
     return;
   }
 
@@ -365,133 +544,10 @@ function postFunction() {
   content.value = "";
   checkBox.checked = false;
   errorMessage.textContent = "";
+  location.reload();
 }
 
 post.addEventListener("click", postFunction);
-
-const postRefs = ref(database, "posts/");
-const loadPosts = async function () {
-  // Listen for changes in the database and update UI accordingly
-  await onValue(postRefs, (snapshot) => {
-    const allPosts = document.querySelector(".dos-landing-page");
-    const newsFeedTitle = allPosts.firstElementChild; // get the first child element (h2)
-
-    if (localStorage.getItem("IsMyPosts") === "true") {
-      newsFeedTitle.textContent = "My Posts";
-    } else newsFeedTitle.textContent = "Newsfeed";
-
-    allPosts.innerHTML = ""; // remove all other child elements
-    allPosts.appendChild(newsFeedTitle); // append the h2 element back to the .dos-landing-page element
-
-    snapshot.forEach((childSnapshot) => {
-      const post = childSnapshot.val();
-
-      if (localStorage.getItem("IsMyPosts") === "true") {
-        if (post.author !== localStorage.getItem("userName")) {
-          return;
-        }
-      }
-
-      //Database Ref
-      let postSubject = post.subject;
-      const postContentValue = post.content;
-      const postedBy = post.postedBy;
-      let datePosted = post.datePosted;
-
-      if (postSubject === undefined) postSubject = "";
-      if (datePosted === undefined) datePosted = "";
-
-      //HTML Ref
-      const postDivCreate = document.createElement("div");
-      postDivCreate.classList.add("post");
-      const postSubjectCreate = document.createElement("h2");
-      const postContentCreate = document.createElement("p");
-      const postedByCreate = document.createElement("p");
-      const postedDateCreate = document.createElement("span");
-
-      postSubjectCreate.innerHTML = postSubject;
-
-      postContentCreate.innerHTML = postContentValue.replace(
-        /(https?:\/\/[^\s]+)|(www\.[^\s]+)|(shorturl\.at\/[^\s]+)/g,
-        function (match) {
-          if (match.startsWith("http")) {
-            return (
-              '<a target = "_blank" href="' + match + '">' + match + "</a>"
-            );
-          } else {
-            return (
-              '<a target = "_blank" href="http://' +
-              match +
-              '">' +
-              match +
-              "</a>"
-            );
-          }
-        }
-      );
-
-      postedByCreate.innerHTML = postedBy;
-
-      let timeString = "";
-      if (datePosted !== "") {
-        const postTime = Math.floor((new Date() - datePosted) / 1000);
-
-        if (postTime < 0 || postTime === NaN) {
-          postTime = 1;
-          timeString = postTime + " second ago";
-        } else if (postTime < 60) {
-          timeString = postTime + " seconds ago";
-        } else if (postTime < 120) {
-          timeString = Math.trunc(postTime / 60) + " minute ago";
-        } else if (postTime < 3600) {
-          timeString = Math.trunc(postTime / 60) + " minutes ago";
-        } else if (postTime < 7200) {
-          timeString = Math.trunc(postTime / 3600) + " hour ago";
-        } else if (postTime < 86400) {
-          timeString = Math.trunc(postTime / 3600) + " hours ago";
-        } else if (postTime < 172800) {
-          timeString = Math.trunc(postTime / 86400) + " day ago";
-        } else if (postTime < 604800) {
-          timeString = Math.trunc(postTime / 86400) + " days ago";
-        } else if (postTime < 691200) {
-          timeString = Math.trunc(postTime / 604800) + " week ago";
-        } else {
-          const postedDate = new Date(datePosted);
-          const dateString = postedDate.toLocaleDateString();
-          timeString = "Posted on " + dateString;
-        }
-      }
-      postedDateCreate.textContent = timeString;
-
-      if (document.querySelector(".post")) {
-        const firstChild = document.querySelector(".post");
-        allPosts.insertBefore(postDivCreate, firstChild);
-      } else allPosts.appendChild(postDivCreate);
-
-      postDivCreate.appendChild(postSubjectCreate);
-      postDivCreate.appendChild(postContentCreate);
-      postDivCreate.appendChild(postedByCreate);
-      postDivCreate.appendChild(postedDateCreate);
-    });
-  });
-};
-
-document.querySelectorAll(".my-posts").forEach(function (myPost) {
-  myPost.addEventListener("click", function () {
-    localStorage.setItem("IsMyPosts", "true");
-    loadPosts();
-  });
-});
-
-document.querySelectorAll(".home").forEach(function (myPost) {
-  myPost.addEventListener("click", function () {
-    localStorage.setItem("IsMyPosts", "false");
-    loadPosts();
-  });
-});
-
-//Loads the posts when u enter the dashboard
-loadPosts();
 
 //collapsible navbar
 const navIcon = document.querySelector(".hamburgur-icon");
@@ -616,7 +672,11 @@ function submitFeedbackFunction() {
   const fbContent = document.querySelector("#fb-content");
 
   if (fbTitle.value === "" || fbContent.value === "") {
+    fbError.addEventListener("animationend", () => {
+      fbError.classList.remove("error-animation");
+    });
     fbError.textContent = "Feedback Title or Content is not filled.";
+    fbError.classList.add("error-animation");
     return;
   }
 

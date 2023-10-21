@@ -16,10 +16,11 @@
 
 *::-webkit-scrollbar {
   width: 3px;
+  background-color: #96d39e2f;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #d8f3dc;
+  background-color: #b7e4c7;
   border-radius: 1rem;
 }
 
@@ -28,6 +29,7 @@
 /* styles for main page */
 body {
   background-color: #f3fdf5;
+  position: relative;
 }
 
 nav {
@@ -53,6 +55,7 @@ nav {
 .nav-links {
   display: flex;
   flex-direction: row;
+  animation: moveDown 400ms;
 }
 
 .post-anc a {
@@ -71,29 +74,30 @@ nav {
 
 .aside-contents {
   width: 15%;
-  min-height: 100vh;
+  height: calc(100vh - 4rem);
   padding: 1rem;
   padding-top: 5rem;
+  /* margin-top: 5rem; */
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-.information-wrapper {
+/* .information-wrapper {
   border-right: 1px solid #d8f3dc;
-}
+} */
 
 .announcement-wrapper {
   width: 20%;
 }
 
 .info-announce-contents {
-  min-height: 80vh;
+  min-height: 100%;
   background-color: #d8f3dc;
   border-radius: 0.5rem;
   padding: 1rem;
   margin-top: 1rem;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .info-announce-contents a:visited,
@@ -161,10 +165,12 @@ nav {
 
 main {
   flex: 1;
-  height: 100vh;
+  height: calc(100vh - 4rem);
   /* background-color: rgb(215, 255, 196); */
   padding: 1rem;
-  padding-top: 5rem;
+  /* padding-top: 5rem; */
+  margin-top: 4rem;
+  /* margin-bottom: 5rem; */
   overflow: auto;
 }
 
@@ -175,6 +181,9 @@ section {
   max-width: 85rem;
   background-color: #d8f3dc;
   border-radius: 1rem;
+  /* overflow-y: scroll; */
+  /* position: relative; */
+  /* z-index: -1; */
 }
 
 .loading {
@@ -189,10 +198,12 @@ section {
   border-radius: 0.5rem;
   margin-bottom: 2rem;
   word-wrap: break-word;
+  animation: postsAnimation 400ms ease-out;
 }
 
 .announcement {
   word-wrap: break-word;
+  animation: postsAnimation 400ms ease-out;
 }
 
 .post a {
@@ -216,9 +227,13 @@ button {
 
 button:hover {
   background-color: #439e74;
-  border: 1px solid black;
   color: #f3fdf5;
   cursor: pointer;
+  transform: translateY(-2px);
+}
+
+.logo-container {
+  animation: moveRight 500ms ease-out 500ms backwards;
 }
 
 .logout-link,
@@ -226,12 +241,37 @@ button:hover {
   color: #ffffff;
 }
 
-.create-post,
-#add-announcement {
-  background-color: #f3fdf5;
+#abt-user button {
   margin-bottom: 1rem;
   width: 100%;
   min-height: 4rem;
+  position: relative;
+  z-index: 0;
+  animation: moveUp 400ms ease-out;
+}
+
+#abt-user button:hover {
+  transform: translateY(-3px);
+}
+
+#abt-user button::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #57cc99;
+  top: 0;
+  left: 0;
+  border-radius: 0.5rem;
+  z-index: -1;
+  transition: 400ms;
+  opacity: 0.8;
+}
+
+#abt-user button:hover::after {
+  transform: scale(1.2);
+  border-radius: 0.5rem;
+  opacity: 0;
 }
 
 .my-posts {
@@ -297,14 +337,14 @@ button:hover {
   background-color: #b7e4c7e7;
   width: 20rem;
   height: 10rem;
-  border-radius: 0.5rem;
-  z-index: 1000;
+  animation: modalAnimation 150ms;
 }
 
 .upload-post-container {
   min-height: 25rem;
   padding: 1rem;
   justify-content: space-between;
+  border-radius: 0.5rem;
 }
 
 #newsfeed,
@@ -317,7 +357,7 @@ textarea {
   border-color: white;
   width: 100%;
   resize: none;
-  max-height: 15rem;
+  max-height: 10rem;
 }
 
 textarea:is(:focus, :valid) {
@@ -333,6 +373,7 @@ textarea:is(:focus, :valid) {
   min-height: 25rem;
   padding: 2rem;
   justify-content: space-around;
+  border-radius: 0.5rem;
 }
 
 #add-announcement:hover {
@@ -380,6 +421,7 @@ label textarea {
   border-radius: 0.5rem;
   border: 1px solid #ccc;
   padding: 0.5rem;
+  margin-bottom: 10px;
 }
 
 .btn-close {
@@ -489,6 +531,40 @@ label textarea {
   display: none;
 }
 
+.load-more {
+  font-size: 1.2rem;
+  width: 8.7rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  background-color: #b7e4c7;
+  border-radius: 0.5rem;
+  border: 1px solid black;
+  transition: all 200ms;
+  user-select: none;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.load-more:hover {
+  text-decoration: #000000 underline;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -3px);
+  cursor: pointer;
+}
+
+.load-more:active {
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -2px) scale(0.98);
+}
+
+.error-animation {
+  animation: errorShake 250ms;
+}
+
+a {
+  color: #000000;
+}
+
 @keyframes animateC {
   0% {
     transform: rotate(0deg);
@@ -506,6 +582,91 @@ label textarea {
 
   100% {
     transform: rotate(405deg);
+  }
+}
+
+@keyframes postsAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  80% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes moveUp {
+  0% {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moveDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moveRight {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes errorShake {
+  0% {
+    transform: translateX(-4px);
+  }
+
+  25% {
+    transform: translateX(4px);
+  }
+
+  50% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
+
+  100% {
+    transform: translateX(0);
   }
 }
 

@@ -89,6 +89,10 @@ body {
   /* color: #09c86d; */
 }
 
+.error-animation {
+  animation: errorShake 250ms;
+}
+
 .show,
 .hide {
   position: absolute;
@@ -201,6 +205,40 @@ p {
 
 .tac p {
   font-size: 15px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(100px);
+  z-index: 1000;
+  transition: all 0.5s;
+}
+
+@keyframes errorShake {
+  0% {
+    transform: translateX(-4px);
+  }
+
+  25% {
+    transform: translateX(4px);
+  }
+
+  50% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @media (max-width: 1050px) {
